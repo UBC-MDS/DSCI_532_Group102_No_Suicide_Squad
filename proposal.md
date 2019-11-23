@@ -43,5 +43,5 @@ Alice is a civilian whose friend has been expressing thoughts about self harm an
 <br/> <br/>
 
 When using our app, Riley, Manuel, and Alice can [explore] suicide rates over time for [selected] regions and countries (Research Question 1), and [compare] the average suicide rates for different demographic groups in these locations (Research Question 2) on the same tab. On a second tab, they can further [compare] the suicide rates for two [specified] countries by a [selected] demographic groups and a [chosen] time period (Research Question 3).
-<br/>
+<br/> <br/>
 In exploring the suicide rates by continent, region, country, age, and gender using our app, we hope that Riley, Manuel, Alice, and all other app users would be better able to answer their own research questions about suicide.
