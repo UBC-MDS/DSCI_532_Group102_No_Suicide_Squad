@@ -5,6 +5,7 @@ DSCI 532 Lab 1 Group 102: Anny Chih, Suvarna Moharir, &amp; Manuel Maldonado Agu
 Our app contains 2 tabs which allow users to explore suicide rates by location (Tab 1), and to compare suicide rates in 2 countries by demographic group (Tab 2). All suicide rates are shown per 100,000 people.
  
 #### Tab 1: Suicide Rates Over Time by Location
+[Sketch of Tab 1](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/Dashboard_Tab1_Sketch.png)
 This tab shows 4 line graphs* representing suicide rates (y-axis) over time (x-axis):
 1. 	Suicide Rates by Continent: Populated by default to show suicide rates of the 5 continents from which data is available.
 2. 	Suicide Rates by Region (Blank by default): Using a checklist of regions, the graph is populated with suicide rates of selected regions over time.
@@ -14,6 +15,7 @@ This tab shows 4 line graphs* representing suicide rates (y-axis) over time (x-a
 *A line representing the average suicide rate across all countries is shown in the first 3 graphs for reference. A vertical line is also present in all line graphs which users can move across time to show a tooltip with the changing values of the continent/region/country/demographic group represented in the graph.
  
 #### Tab 2: Two-Country Comparison of Suicide Rates by Demographic Group
+[Sketch of Tab 2](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/Dashboard_Tab2_Sketch.png)
 This tab shows 2 identical drop-down menus where users can select 2 countries, and a RangeSlider where users can examine a specific time period. This tab also shows 2 bar graphs:
 1. 	Average Total Suicide Rate by Country (Blank by default): After 2 countries are selected, the graph displays average suicide rates for all people in each country.
 2. 	Suicide Rate by Demographic Group (Blank by default): After demographic groups are selected, the graph is populated with a pair of bars for each group. Each pair represents the suicide rates for the 2 previously selected countries.
