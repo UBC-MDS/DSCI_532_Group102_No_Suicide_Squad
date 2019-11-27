@@ -7,6 +7,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 import altair as alt
 import vega_datasets
 
+# Testing a new comment
 app = dash.Dash(__name__, assets_folder='assets')
 app.config['suppress_callback_exceptions'] = True
 
