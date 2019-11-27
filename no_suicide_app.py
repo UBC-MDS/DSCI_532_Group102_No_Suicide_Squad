@@ -232,6 +232,112 @@ def make_plot_B(selected_region = 'Select a Region Please'):
 
     return chart_B
 
+#plot_C = COUNTRIES
+def make_plot_C(selected_country = 'Select a Country Please'):
+
+    def mds_special():
+        font = "Arial"
+        axisColor = "#000000"
+        gridColor = "#DEDDDD"
+        return {
+            "config": {
+                "title": {
+                    "fontSize": 24,
+                    "font": font,
+                    "anchor": "start", # equivalent of left-aligned.
+                    "fontColor": "#000000"
+                },
+                'view': {
+                    "height": 300, 
+                    "width": 400
+                },
+                "axisX": {
+                    "domain": True,
+                    #"domainColor": axisColor,
+                    "gridColor": gridColor,
+                    "domainWidth": 1,
+                    "grid": False,
+                    "labelFont": font,
+                    "labelFontSize": 12,
+                    "labelAngle": 0, 
+                    "tickColor": axisColor,
+                    "tickSize": 5, # default, including it just to show you can change it
+                    "titleFont": font,
+                    "titleFontSize": 16,
+                    "titlePadding": 10, # guessing, not specified in styleguide
+                    "title": "X Axis Title (units)", 
+                },
+                "axisY": {
+                    "domain": False,
+                    "grid": True,
+                    "gridColor": gridColor,
+                    "gridWidth": 1,
+                    "labelFont": font,
+                    "labelFontSize": 14,
+                    "labelAngle": 0, 
+                    #"ticks": False, # even if you don't have a "domain" you need to turn these off.
+                    "titleFont": font,
+                    "titleFontSize": 16,
+                    "titlePadding": 10, # guessing, not specified in styleguide
+                    "title": "Y Axis Title (units)", 
+                    # titles are by default vertical left of axis so we need to hack this 
+                    #"titleAngle": 0, # horizontal
+                    #"titleY": -10, # move it up
+                    #"titleX": 18, # move it to the right so it aligns with the labels 
+                },
+            }
+                }
+
+    # register the custom theme under a chosen name
+    alt.themes.register('mds_special', mds_special)
+
+    # enable the newly registered theme
+    alt.themes.enable('mds_special')
+    #alt.themes.enable('none') # to return to default
+
+    # Update Data source based on user selection:
+    a = selected_country
+    plot_c_data = final_df.query('country in @a').query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','country'],as_index = False).agg({"suicides_per_100k_pop":"mean"})
+
+    # Create a plot C
+    source = plot_c_data.round(1)
+
+    nearest = alt.selection(type='single', nearest=True, on='mouseover',
+                        fields=['year'], empty='none')
+    line= alt.Chart(source).mark_line(point=True).encode(
+        x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+        color='country'
+    ).properties(
+        width=500,
+        height=200,
+        title='Suicide Rate per Country'
+    )
+    selectors = alt.Chart(source).mark_point().encode(
+        x='year:O',
+        opacity=alt.value(0),
+    ).add_selection(
+        nearest
+    )
+    points = line.mark_point().encode(
+        opacity=alt.condition(nearest, alt.value(1), alt.value(0))
+    )
+    text = line.mark_text(align='left', dx=5, dy=-5).encode(
+        text=alt.condition(nearest, 'suicides_per_100k_pop', alt.value(' '))
+    )
+    rules = alt.Chart(source).mark_rule(color='gray').encode(
+        x='year:O',
+    ).transform_filter(
+        nearest
+    )
+    chart_C = alt.layer(
+        line, selectors, points, rules, text
+    ).properties(
+        width=600, height=300
+    )        
+
+    return chart_C
+
 app.layout = html.Div([
 
     html.Div(
@@ -339,7 +445,41 @@ app.layout = html.Div([
         ################ The magic happens here
         srcDoc=make_plot_B().to_html()
         ################ The magic happens here
-        )  
+        ),
+
+        #    html.H3('Here is our first plot:'),
+        html.Iframe(
+        sandbox='allow-scripts',
+        id='plot_c',
+        height='300',
+        width='1500',
+        style={'border-width': '0'},
+        ################ The magic happens here
+        srcDoc=make_plot_C().to_html()
+        ################ The magic happens here
+        ),
+
+        html.Iframe(height='25', width='10',style={'border-width': '0'}),
+
+        html.H3('Suicide Rate by Country'),
+        html.H4('Select one or multiple countries'),
+
+        dcc.Dropdown(
+        id='dd-country',
+        options=[
+            {'label': 'Africa', 'value': 'Africa','disabled': True},
+            {'label': 'Argentina', 'value': 'Argentina'},
+            {'label': 'Bolivia', 'value': 'Bolivia'},
+            {'label': 'Canada', 'value': 'Canada'}
+        ],
+        value='Please Select a Country',
+        multi=True,
+        style=dict(width='45%',
+              verticalAlign="middle"
+              )
+        ),
+        # Just to add some space
+        html.Iframe(height='200', width='10',style={'border-width': '0'})
 ])
 
 # This first callback inserts raw text into an html.Div with id 'dd-output'
@@ -361,6 +501,15 @@ def update_plot(sub_region):
     updated_plot = make_plot_B(sub_region).to_html()
 
     return updated_plot
+
+@app.callback(
+    dash.dependencies.Output('plot_c', 'srcDoc'),
+    [dash.dependencies.Input('dd-country', 'value')])
+def update_plot_c(country):
+
+    updated_plot_c = make_plot_C(country).to_html()
+
+    return updated_plot_c
 
 if __name__ == '__main__':
     app.run_server(debug=True)
