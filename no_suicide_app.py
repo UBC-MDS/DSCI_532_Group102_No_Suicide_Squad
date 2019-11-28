@@ -342,6 +342,51 @@ def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list 
     )
     return chart_2a
 
+#### DEFINE PLOT 2b FUNCTION (2 country comparison: by demographic group)
+def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list = [0,0], demo_selection = ['female : 25-34 years']):
+
+    # Sets default values
+    year_start = year_list[0]
+    year_end = year_list[1]
+
+    a = country_a
+    b = country_b
+    
+    #demo_selection = ['female : 05-14 years', 'female : 15-24 years', 'female : 25-34 years', 'male : 05-14 years', 'male : 15-24 years', 'male: 25-34 years']
+    d = demo_selection
+
+    # Makes DataFrame of average suicide rates for the 2 countries by demo group
+    data2b = final_df
+    data2b["age"]= final_df["age"].str.replace("5-14", "05-14", case = False)
+    data2b['demo_group'] = final_df["sex"].map(str) +[" : "]+ final_df["age"]
+    data2b = final_df.query('suicides_per_100k_pop>0.1'
+                            ).query('year > @year_start & year < @year_end'
+                            ).query('country == @a | country == @b'
+                            ).query('demo_group in @d')
+    data2b = data2b.groupby(['demo_group', 'country']).agg({'suicides_per_100k_pop': 'mean'})
+    data2b = data2b.reset_index()
+    
+    # Rounds values to 2 decimal points
+    data2b = data2b.round(2)
+
+    # Plots chart
+    chart_2b = alt.Chart(data2b).mark_bar(size = 40).encode(
+        color = alt.Color('country:N'),
+        y = alt.Y('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k people)', 
+                                                            labelAngle = 0)),
+        x = alt.X('country:N', axis = None),
+        tooltip = ['suicides_per_100k_pop'],
+        column = alt.Column('demo_group:N')
+    ).properties(width = 100, height = 300,
+                title = "Suicide Rate Per 100,000 People"
+    ).configure_title(fontSize = 15
+    ).configure_axis(labelFontSize = 12,
+                    titleFontSize = 12,
+                    labelColor = '#4c5c5c',
+                    titleColor = '#3a4242'
+    )
+    return chart_2b
+
 #### SET UP LAYOUT
 app.layout = html.Div([
     html.Div(
@@ -839,14 +884,40 @@ app.layout = html.Div([
             html.Iframe(
                 sandbox='allow-scripts',
                 id='plot2a',
-                height='1000',
+                height='500',
                 width='1500',
                 style={'border-width': '0'},
                 ),
-                
-            # Add space
-            html.Iframe(height='25', width='10',style={'border-width': '0'}),
+            
+            #### DROPDOWNS: PLOT 2b
+            dcc.Checklist(
+                id = 'demo_checklist',
+                options = [
+                    {'label': 'female : 05-14 years', 'value': 'female : 05-14 years'},
+                    {'label': 'female : 15-24 years', 'value': 'female : 15-24 years'},
+                    {'label': 'female : 25-34 years', 'value': 'female : 25-34 years'},
+                    {'label': 'female : 35-54 years', 'value': 'female : 35-54 years'},
+                    {'label': 'female : 54-74 years', 'value': 'female : 54-74 years'},
+                    {'label': 'female : 75+ years', 'value': 'female : 75+ years'},
+                    {'label': 'male : 05-14 years', 'value': 'male : 05-14 years'},
+                    {'label': 'male : 15-24 years', 'value': 'male : 15-24 years'},
+                    {'label': 'male : 25-34 years', 'value': 'male : 25-34 years'},
+                    {'label': 'male : 35-54 years', 'value': 'male : 35-54 years'},
+                    {'label': 'male : 54-74 years', 'value': 'male : 54-74 years'},
+                    {'label': 'male : 75+ years', 'value': 'male : 75+ years'},
+                ],
+                value = ['female : 25-34 years'],
+                labelStyle={'display': 'inline-block', 'text-align': 'justify'}
+            ),
 
+            #### IFRAME: PLOT 2b
+            html.Iframe(
+                sandbox='allow-scripts',
+                id='plot2b',
+                height='500',
+                width='1200',
+                style={'border-width': '0'},
+                ),
         ]),
     ]),    
 
@@ -880,13 +951,26 @@ def update_plot_1d(country):
 
 #### DECORATOR: PLOT 2a
 @app.callback(
-    dash.dependencies.Output('plot2a', 'srcDoc'), # plot2a is the id(iFrame) srcDoc is what you're passing to the id specified
+    dash.dependencies.Output('plot2a', 'srcDoc'), 
     [dash.dependencies.Input('country_a_dropdown', 'value'),
      dash.dependencies.Input('country_b_dropdown', 'value'),
      dash.dependencies.Input('my-range-slider', 'value')])
 def update_plot2a(country_a, country_b, year_list):
     updated_plot_2a = make_plot2a(country_a, country_b, year_list).to_html()
-    return updated_plot_2a # this is the srcDoc (srcDoc is set to updated_plot_2a)
+    return updated_plot_2a 
+
+#### DECORATOR: PLOT 2b
+@app.callback(
+    dash.dependencies.Output('plot2b', 'srcDoc'), 
+    [dash.dependencies.Input('country_a_dropdown', 'value'),
+     dash.dependencies.Input('country_b_dropdown', 'value'),
+     dash.dependencies.Input('my-range-slider', 'value'),
+     dash.dependencies.Input('demo_checklist', 'value')
+     ])
+
+def update_plot2b(country_a, country_b, year_list, demo_selection):
+    updated_plot_2b = make_plot2b(country_a, country_b, year_list, demo_selection).to_html()
+    return updated_plot_2b
 
 if __name__ == '__main__':
     app.run_server(debug=True)
