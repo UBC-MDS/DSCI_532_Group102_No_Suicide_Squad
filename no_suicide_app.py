@@ -235,11 +235,11 @@ def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list 
 
     # Plots chart
     chart_2a = alt.Chart(data2a).mark_bar().encode(
-        alt.Color('country:N'),
-        alt.Y('country:N', axis = alt.Axis(title = 'Countries', labelAngle = 0)),
-        alt.X('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k people)', 
+        color = alt.Color('country:N'),
+        x = alt.X('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k people)', 
                                                             labelAngle = 0)),
-                                                            tooltip = ['suicides_per_100k_pop']
+        y = alt.Y('country:N', axis = alt.Axis(title = 'Countries', labelAngle = 0)),
+        tooltip = ['suicides_per_100k_pop']
     ).properties(width = 500, height = 300,
                 title = "Suicide Rate Per 100,000 People"
     ).configure_title(fontSize = 15
