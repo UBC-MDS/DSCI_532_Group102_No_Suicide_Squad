@@ -96,7 +96,7 @@ def make_plot_1a():
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'])
     line= alt.Chart(source).mark_line(point=False).encode(
-        x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+        x = alt.X('year:O',axis=alt.Axis(title='Date:Year', grid=False)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
         color = alt.Color('continent',legend=alt.Legend(title="Legend"))
     ).properties(
