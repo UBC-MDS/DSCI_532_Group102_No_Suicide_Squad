@@ -20,7 +20,12 @@ continent_df = pd.read_excel('https://github.com/UBC-MDS/DSCI_532_Group102_No_Su
 final_df = initial_df.merge(continent_df, on='country', how='left')
 final_df = final_df.drop(['country-year', ' gdp_for_year ($) ','HDI for year', 'code_2','country_code','region_code','sub_region_code'],axis=1)
 final_df = final_df.rename(columns={'gdp_per_capita ($)': 'gdp_per_capita_usd', 'code_3': 'country_code_name','suicides/100k pop':'suicides_per_100k_pop'})
+final_df["age"]= final_df["age"].str.replace("5-14", "05-14", case = False)
+final_df['demo_group'] = final_df["sex"].map(str) +[" : "]+ final_df["age"]
 plot_a_data = final_df.query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','continent'],as_index = False).agg({"suicides_per_100k_pop":"mean","country":"nunique"})
+general_data = final_df.query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year'],as_index = False).agg({"suicides_per_100k_pop":"mean","country":"nunique"})
+general_data['Label'] = 'Worldwide Benchmark'
+
 
 #### DEFINE THEME
 def mds_special():
@@ -84,16 +89,16 @@ alt.themes.enable('mds_special')
 #alt.themes.enable('none') # to return to default
 
 #### DEFINE PLOT 1a FUNCTION (continent)
-def make_plot_1a(xval = 'Displacement'):
+def make_plot_1a():
     # Create a plot 1a
     source = plot_a_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'], empty='none')
-    line= alt.Chart(source).mark_line(point=True).encode(
+    line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
-        color='continent'
+        color = alt.Color('continent',legend=alt.Legend(title="Legend"))
     ).properties(
         width=500,
         height=200,
@@ -116,11 +121,21 @@ def make_plot_1a(xval = 'Displacement'):
     ).transform_filter(
         nearest
     )
+    line2 = alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    color = alt.Color('Label',legend=alt.Legend())
+    )
     chart_1a = alt.layer(
-        line, selectors, points, rules, text
+        line,line2, selectors, points, rules, text
     ).properties(
         width=600, height=300
-    )        
+    ).configure_legend(
+    strokeColor='gray',
+    fillColor='#EEEEEE',
+    padding=10,
+    cornerRadius=10
+    )          
 
     return chart_1a
 
@@ -136,14 +151,14 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'], empty='none')
-    line= alt.Chart(source).mark_line(point=True).encode(
+    line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
-        color='sub_region'
+        color = alt.Color('sub_region',legend=alt.Legend(title = 'Legend'))
     ).properties(
         width=500,
         height=200,
-        title='Suicide Rate per Continent'
+        title='Suicide Rate per Region'
     )
     selectors = alt.Chart(source).mark_point().encode(
         x='year:O',
@@ -162,11 +177,21 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
     ).transform_filter(
         nearest
     )
+    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    color = alt.Color('Label',legend=alt.Legend())
+    )
     chart_1b = alt.layer(
-        line, selectors, points, rules, text
+        line,line2, selectors, points, rules, text
     ).properties(
         width=600, height=300
-    )        
+    ).configure_legend(
+    strokeColor='gray',
+    fillColor='#EEEEEE',
+    padding=10,
+    cornerRadius=10
+    )         
 
     return chart_1b
 
@@ -182,10 +207,10 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'], empty='none')
-    line= alt.Chart(source).mark_line(point=True).encode(
+    line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
-        color='country'
+        color = alt.Color('country',legend=alt.Legend(title='Legend'))
     ).properties(
         width=500,
         height=200,
@@ -208,13 +233,80 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
     ).transform_filter(
         nearest
     )
+    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    color = alt.Color('Label',legend=alt.Legend())
+    )
     chart_C = alt.layer(
-        line, selectors, points, rules, text
+        line,line2, selectors, points, rules, text
     ).properties(
         width=600, height=300
-    )        
+    ).configure_legend(
+    strokeColor='gray',
+    fillColor='#EEEEEE',
+    padding=10,
+    cornerRadius=10
+    )           
 
     return chart_C
+
+
+#### DEFINE PLOT 1d FUNCTION (countries)
+def make_plot_1d(selected_country = 'Select a Country Please'):
+
+    # Update Data source based on user selection:
+    a = selected_country
+    plot_d_data = final_df.query('country in @a').query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','demo_group'],as_index = False).agg({"suicides_per_100k_pop":"mean"})
+    
+    # Create a plot D
+    source = plot_d_data.round(1)
+
+    nearest = alt.selection(type='single', nearest=True, on='mouseover',
+                        fields=['year'], empty='none')
+    line= alt.Chart(source).mark_line(point=False).encode(
+        x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+        color = alt.Color('demo_group',legend=alt.Legend(title='Legend'))
+    ).properties(
+        width=500,
+        height=200,
+        title='Average Suicide Rate per Demographic Group in Selected Country (Countries)'
+    )
+    selectors = alt.Chart(source).mark_point().encode(
+        x='year:O',
+        opacity=alt.value(0),
+    ).add_selection(
+        nearest
+    )
+    points = line.mark_point().encode(
+        opacity=alt.condition(nearest, alt.value(1), alt.value(0))
+    )
+    text = line.mark_text(align='left', dx=5, dy=-5).encode(
+        text=alt.condition(nearest, 'suicides_per_100k_pop', alt.value(' '))
+    )
+    rules = alt.Chart(source).mark_rule(color='gray').encode(
+        x='year:O',
+    ).transform_filter(
+        nearest
+    )
+    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    color = alt.Color('Label',legend=alt.Legend())
+    )
+    chart_D = alt.layer(
+        line,line2, selectors, points, rules, text
+    ).properties(
+        width=600, height=300
+    ).configure_legend(
+    strokeColor='gray',
+    fillColor='#EEEEEE',
+    padding=10,
+    cornerRadius=10
+    )           
+
+    return chart_D
 
 #### DEFINE PLOT 2a FUNCTION (2 country comparison: avg total suicide rate)
 def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list = [0,0]):
@@ -318,7 +410,7 @@ app.layout = html.Div([
                     {'label': 'Micronesia', 'value': 'Micronesia'},        
                     {'label': 'Polynesia', 'value': 'Polynesia'}
                 ],
-                value='Central America',
+                value='',
                 multi=True,
                 style=dict(width='45%',
                     verticalAlign="middle"
@@ -326,7 +418,7 @@ app.layout = html.Div([
                 ),
             
             # Add space
-            html.Iframe(height='200', width='10',style={'border-width': '0'}),
+            html.Iframe(height='20', width='10',style={'border-width': '0'}),
 
             #### IFRAME: PLOT 1b
             html.Iframe(
@@ -343,10 +435,111 @@ app.layout = html.Div([
             dcc.Dropdown(
                 id='dd-country',
                 options=[
-                    {'label': 'Africa', 'value': 'Africa','disabled': True},
+                        {'label': 'Africa', 'value': 'Africa','disabled': True},
+                    {'label': 'Cabo Verde', 'value': 'Cabo Verde'},
+                    {'label': 'Mauritius', 'value': 'Mauritius'},
+                    {'label': 'Seychelles', 'value': 'Seychelles'},
+                    {'label': 'South Africa', 'value': 'South Africa'},
+                    {'label': 'Americas', 'value': 'Americas','disabled': True},
+                    {'label': 'Antigua and Barbuda', 'value': 'Antigua and Barbuda'},
                     {'label': 'Argentina', 'value': 'Argentina'},
-                    {'label': 'Bolivia', 'value': 'Bolivia'},
-                    {'label': 'Canada', 'value': 'Canada'}
+                    {'label': 'Aruba', 'value': 'Aruba'},
+                    {'label': 'Bahamas', 'value': 'Bahamas'},
+                    {'label': 'Barbados', 'value': 'Barbados'},
+                    {'label': 'Belize', 'value': 'Belize'},
+                    {'label': 'Brazil', 'value': 'Brazil'},
+                    {'label': 'Canada', 'value': 'Canada'},
+                    {'label': 'Chile', 'value': 'Chile'},
+                    {'label': 'Colombia', 'value': 'Colombia'},
+                    {'label': 'Costa Rica', 'value': 'Costa Rica'},
+                    {'label': 'Cuba', 'value': 'Cuba'},
+                    {'label': 'Dominica', 'value': 'Dominica'},
+                    {'label': 'Ecuador', 'value': 'Ecuador'},
+                    {'label': 'El Salvador', 'value': 'El Salvador'},
+                    {'label': 'Grenada', 'value': 'Grenada'},
+                    {'label': 'Guatemala', 'value': 'Guatemala'},
+                    {'label': 'Guyana', 'value': 'Guyana'},
+                    {'label': 'Jamaica', 'value': 'Jamaica'},
+                    {'label': 'Mexico', 'value': 'Mexico'},
+                    {'label': 'Nicaragua', 'value': 'Nicaragua'},
+                    {'label': 'Panama', 'value': 'Panama'},
+                    {'label': 'Paraguay', 'value': 'Paraguay'},
+                    {'label': 'Puerto Rico', 'value': 'Puerto Rico'},
+                    {'label': 'Saint Kitts and Nevis', 'value': 'Saint Kitts and Nevis'},
+                    {'label': 'Saint Lucia', 'value': 'Saint Lucia'},
+                    {'label': 'Saint Vincent and Grenadines', 'value': 'Saint Vincent and Grenadines'},
+                    {'label': 'Suriname', 'value': 'Suriname'},
+                    {'label': 'Trinidad and Tobago', 'value': 'Trinidad and Tobago'},
+                    {'label': 'United States', 'value': 'United States'},
+                    {'label': 'Uruguay', 'value': 'Uruguay'},
+                    {'label': 'Asia', 'value': 'Asia','disabled': True},
+                    {'label': 'Armenia', 'value': 'Armenia'},
+                    {'label': 'Azerbaijan', 'value': 'Azerbaijan'},
+                    {'label': 'Bahrain', 'value': 'Bahrain'},
+                    {'label': 'Cyprus', 'value': 'Cyprus'},
+                    {'label': 'Georgia', 'value': 'Georgia'},
+                    {'label': 'Israel', 'value': 'Israel'},
+                    {'label': 'Japan', 'value': 'Japan'},
+                    {'label': 'Kazakhstan', 'value': 'Kazakhstan'},
+                    {'label': 'Kuwait', 'value': 'Kuwait'},
+                    {'label': 'Kyrgyzstan', 'value': 'Kyrgyzstan'},
+                    {'label': 'Macau', 'value': 'Macau'},
+                    {'label': 'Maldives', 'value': 'Maldives'},
+                    {'label': 'Mongolia', 'value': 'Mongolia'},
+                    {'label': 'Oman', 'value': 'Oman'},
+                    {'label': 'Philippines', 'value': 'Philippines'},
+                    {'label': 'Qatar', 'value': 'Qatar'},
+                    {'label': 'Republic of Korea', 'value': 'Republic of Korea'},
+                    {'label': 'Singapore', 'value': 'Singapore'},
+                    {'label': 'Sri Lanka', 'value': 'Sri Lanka'},
+                    {'label': 'Thailand', 'value': 'Thailand'},
+                    {'label': 'Turkey', 'value': 'Turkey'},
+                    {'label': 'Turkmenistan', 'value': 'Turkmenistan'},
+                    {'label': 'United Arab Emirates', 'value': 'United Arab Emirates'},
+                    {'label': 'Uzbekistan', 'value': 'Uzbekistan'},
+                    {'label': 'Europe', 'value': 'Europe','disabled': True},
+                    {'label': 'Albania', 'value': 'Albania'},
+                    {'label': 'Austria', 'value': 'Austria'},
+                    {'label': 'Belarus', 'value': 'Belarus'},
+                    {'label': 'Belgium', 'value': 'Belgium'},
+                    {'label': 'Bosnia and Herzegovina', 'value': 'Bosnia and Herzegovina'},
+                    {'label': 'Bulgaria', 'value': 'Bulgaria'},
+                    {'label': 'Croatia', 'value': 'Croatia'},
+                    {'label': 'Czech Republic', 'value': 'Czech Republic'},
+                    {'label': 'Denmark', 'value': 'Denmark'},
+                    {'label': 'Estonia', 'value': 'Estonia'},
+                    {'label': 'Finland', 'value': 'Finland'},
+                    {'label': 'France', 'value': 'France'},
+                    {'label': 'Germany', 'value': 'Germany'},
+                    {'label': 'Greece', 'value': 'Greece'},
+                    {'label': 'Hungary', 'value': 'Hungary'},
+                    {'label': 'Iceland', 'value': 'Iceland'},
+                    {'label': 'Ireland', 'value': 'Ireland'},
+                    {'label': 'Latvia', 'value': 'Latvia'},
+                    {'label': 'Lithuania', 'value': 'Lithuania'},
+                    {'label': 'Luxembourg', 'value': 'Luxembourg'},
+                    {'label': 'Malta', 'value': 'Malta'},
+                    {'label': 'Montenegro', 'value': 'Montenegro'},
+                    {'label': 'Netherlands', 'value': 'Netherlands'},
+                    {'label': 'Norway', 'value': 'Norway'},
+                    {'label': 'Poland', 'value': 'Poland'},
+                    {'label': 'Portugal', 'value': 'Portugal'},
+                    {'label': 'Romania', 'value': 'Romania'},
+                    {'label': 'Russian Federation', 'value': 'Russian Federation'},
+                    {'label': 'San Marino', 'value': 'San Marino'},
+                    {'label': 'Serbia', 'value': 'Serbia'},
+                    {'label': 'Slovakia', 'value': 'Slovakia'},
+                    {'label': 'Slovenia', 'value': 'Slovenia'},
+                    {'label': 'Spain', 'value': 'Spain'},
+                    {'label': 'Sweden', 'value': 'Sweden'},
+                    {'label': 'Switzerland', 'value': 'Switzerland'},
+                    {'label': 'Ukraine', 'value': 'Ukraine'},
+                    {'label': 'United Kingdom', 'value': 'United Kingdom'},
+                    {'label': 'Oceania', 'value': 'Oceania','disabled': True},
+                    {'label': 'Australia', 'value': 'Australia'},
+                    {'label': 'Fiji', 'value': 'Fiji'},
+                    {'label': 'Kiribati', 'value': 'Kiribati'},
+                    {'label': 'New Zealand', 'value': 'New Zealand'}
                 ],
                 value='Please Select a Country',
                 multi=True,
@@ -359,6 +552,15 @@ app.layout = html.Div([
             html.Iframe(
                 sandbox='allow-scripts',
                 id='plot_1c',
+                height='300',
+                width='1500',
+                style={'border-width': '0'},
+                ),
+            
+            #### IFRAME: PLOT 1d
+            html.Iframe(
+                sandbox='allow-scripts',
+                id='plot_1d',
                 height='300',
                 width='1500',
                 style={'border-width': '0'},
@@ -667,6 +869,14 @@ def update_plot_1b(sub_region):
 def update_plot_1c(country):
     updated_plot_1c = make_plot_1c(country).to_html()
     return updated_plot_1c
+
+#### DECORATOR: PLOT 1D
+@app.callback(
+    dash.dependencies.Output('plot_1d', 'srcDoc'),
+    [dash.dependencies.Input('dd-country', 'value')])
+def update_plot_1d(country):
+    updated_plot_1d = make_plot_1d(country).to_html()
+    return updated_plot_1d
 
 #### DECORATOR: PLOT 2a
 @app.callback(
