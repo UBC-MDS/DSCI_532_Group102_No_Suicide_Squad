@@ -251,7 +251,6 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
 
     return chart_C
 
-
 #### DEFINE PLOT 1d FUNCTION (countries)
 def make_plot_1d(selected_country = 'Select a Country Please'):
 
@@ -326,14 +325,14 @@ def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list 
     data2a = data2a.round(2)
 
     # Plots chart
-    chart_2a = alt.Chart(data2a).mark_bar().encode(
+    chart_2a = alt.Chart(data2a).mark_bar(size = 50).encode(
         color = alt.Color('country:N'),
         x = alt.X('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k people)', 
                                                             labelAngle = 0)),
         y = alt.Y('country:N', axis = alt.Axis(title = 'Countries', labelAngle = 0)),
         tooltip = ['suicides_per_100k_pop']
-    ).properties(width = 500, height = 300,
-                title = "Suicide Rate Per 100,000 People"
+    ).properties(width = 500, height = 150,
+                title = "Suicide Rate by Country"
     ).configure_title(fontSize = 15
     ).configure_axis(labelFontSize = 12,
                     titleFontSize = 12,
@@ -357,8 +356,6 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
 
     # Makes DataFrame of average suicide rates for the 2 countries by demo group
     data2b = final_df
-    data2b["age"]= final_df["age"].str.replace("5-14", "05-14", case = False)
-    data2b['demo_group'] = final_df["sex"].map(str) +[" : "]+ final_df["age"]
     data2b = final_df.query('suicides_per_100k_pop>0.1'
                             ).query('year > @year_start & year < @year_end'
                             ).query('country == @a | country == @b'
@@ -376,9 +373,9 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
                                                             labelAngle = 0)),
         x = alt.X('country:N', axis = None),
         tooltip = ['suicides_per_100k_pop'],
-        column = alt.Column('demo_group:N')
+        column = alt.Column('demo_group:N', title = '')
     ).properties(width = 100, height = 300,
-                title = "Suicide Rate Per 100,000 People"
+                title = "Suicide Rate by Demographic Group"
     ).configure_title(fontSize = 15
     ).configure_axis(labelFontSize = 12,
                     titleFontSize = 12,
@@ -395,18 +392,19 @@ app.layout = html.Div([
             html.Div('Suicide Rate Dashboard', className="app-header--title")
         ]
     ),    
-
     #### ADD TABS TO TOP OF PAGE
     dcc.Tabs(id='tabs', value='tab1', children=[
-
-        #### FIRST TAB
+        #### TAB 1
         dcc.Tab(label='Dashboard - Suicide Rate', value='tab-1', children = [
             
             #### MAIN PAGE HEADER
             html.H1('Tab 1 Title - need to change me'),
             html.H2('Tab 1 Subtitle - change me too please'),
 
-            #### IFRAME: PLOT 1A
+            # Text for Plot 1a
+            html.Div([html.P('''Step 1: This graph shows the average suicide rate over time, by continent. The dashed line shows the worldwide average for each year. You can hover over each line to see the exact suicide rate for that continent and year. ''')]),
+
+            #### IFRAME: PLOT 1a
             html.Iframe(
                 sandbox='allow-scripts',
                 id='plot_1a',
@@ -420,6 +418,9 @@ app.layout = html.Div([
             # Just to add some space
             html.Iframe(height='25', width='10',style={'border-width': '0'}),
 
+            # Text for Plot 1b
+            html.Div([html.P('''Step 2: Are there any sub-regions you are specifically interested in looking at? You can use this drop-down to select one or more sub-regions (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that sub-region and year. The dashed line shows the worldwide average for each year.''')]), 
+            
             #### DROPDOWNS: PLOT 1b
             html.H3('Suicide Rate by Region'),
             html.H4('Select one or multiple Regions'),
@@ -474,6 +475,11 @@ app.layout = html.Div([
                 style={'border-width': '0'}
                 ),
 
+             # Text for Plot 1b
+            
+            # Text for Plot 1c
+            html.Div([html.P('''Step 3: Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more? Use the drop-down to select one or more countries (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that country and year. The dashed line shows the worldwide average for each year.''')]),
+            
             #### DROPDOWNS: PLOT 1c
             html.H3('Suicide Rate by Country'),
             html.H4('Select one or multiple countries'),
@@ -602,6 +608,9 @@ app.layout = html.Div([
                 style={'border-width': '0'},
                 ),
             
+            # Text for Plot 1d
+            html.Div([html.P('''Step 4: You may be wondering what factors other than location affect the suicide rate. Make sure you have at least one country selected above, and then this graph will automatically show the average suicide rates for 12 demographic groups (based on age and gender) over time. If you have chosen multiple countries, it will display the average suicide rate for each of the 12 demographic groups of all selected countries. You can hover over each line to see the exact suicide rate for that country/countries and demographic group. The dashed line shows the worldwide average for each year.''')]),
+            
             #### IFRAME: PLOT 1d
             html.Iframe(
                 sandbox='allow-scripts',
@@ -621,6 +630,12 @@ app.layout = html.Div([
             #### MAIN PAGE HEADER
             html.H1('Tab 2 Title - need to change me'),
             html.H2('Tab 2 Subtitle - change me too please'),
+
+            # Add space
+            html.Iframe(height='20', width='10',style={'border-width': '0'}),
+
+            # Text for Plot 2a - Country Dropdowns
+            html.Div([html.P('''Step 1: Pick 2 countries that you would like to compare. Select them in each dropdown (1 country per dropdown).''')]),
 
             #### DROPDOWNS: PLOT 2a
             dcc.Dropdown(
@@ -843,6 +858,12 @@ app.layout = html.Div([
                         verticalAlign = 'middle')
             ),
 
+            # Add space
+            html.Iframe(height='20', width='10',style={'border-width': '0'}),
+
+            # Text for Plot 2a - Year Slider
+            html.Div([html.P('''Step 2: Pick a range of years that you are interested in looking into. Use the slider to select this range. The graph below will show the average suicide rate for the year range selected for each of the 2 countries. ''')]),
+            
             dcc.RangeSlider(
                 id='my-range-slider',
                 min = 1984,
@@ -880,15 +901,21 @@ app.layout = html.Div([
                 value = [1986, 2014]
                 ),
 
+            # Add space
+            html.Iframe(height='20', width='10',style={'border-width': '0'}),
+
             #### IFRAME: PLOT 2a
             html.Iframe(
                 sandbox='allow-scripts',
                 id='plot2a',
-                height='500',
+                height='250',
                 width='1500',
                 style={'border-width': '0'},
                 ),
             
+             # Text for Plot 2b
+            html.Div([html.P('''Step 3: You might be wondering about how the suicide rate for the 2 countries changes by demographic group. You can select one or more demographic groups (by gender and age) to see the different suicide rates by demographic group for your 2 chosen countries. ''')]),
+
             #### DROPDOWNS: PLOT 2b
             dcc.Checklist(
                 id = 'demo_checklist',
@@ -921,6 +948,25 @@ app.layout = html.Div([
         ]),
     ]),    
 
+    #### MAIN TAB TEXT
+    html.Div([
+        html.P('''
+        Welcome to our virtual dashboard! The purpose of this app is to help you visualize suicide rates in different locations over time, and how a variety of different factors (i.e. age, gender, and year) affect these rates. 
+        We have 2 main questions we are trying to answer: 
+        '''),
+        html.P('''
+        Tab 1: How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this? 
+        '''),
+        html.P('''
+        Tab 2: How does the suicide rate of one coountry compare against the suicide rate of another country? 
+        '''),
+        html.P('''
+        Please click on a tab to get started! 
+        '''),    
+        html.P('''
+        If you have thoughts of suicide, please do not hesitate to reach out to your local Crisis Centre or Suicide Prevention Hotline. In British Columbia, you can get help by visiting www.crisiscentre.bc.ca or by calling 1-800-784-2433 from anywhere in the province.
+        ''')
+    ]),
 
 
 ])
