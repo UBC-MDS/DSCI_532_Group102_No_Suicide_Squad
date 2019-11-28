@@ -7,7 +7,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 import altair as alt
 import vega_datasets
 
-app = dash.Dash(__name__, assets_folder='assets')
+app = dash.Dash(__name__, assets_folder='assets', external_stylesheets=external_stylesheets)
 app.config['suppress_callback_exceptions'] = True
 
 server = app.server
@@ -28,64 +28,64 @@ general_data['Label'] = 'Worldwide Benchmark'
 
 
 #### DEFINE THEME
-def mds_special():
-    font = "Arial"
-    axisColor = "#000000"
-    gridColor = "#DEDDDD"
-    return {
-        "config": {
-        "title": {
-                "fontSize": 24,
-                "font": font,
-                "anchor": "start", # equivalent of left-aligned.
-                "fontColor": "#000000"
-                },
-            'view': {
-                "height": 300, 
-                "width": 400
-            },
-            "axisX": {
-                "domain": True,
-                #"domainColor": axisColor,
-                "gridColor": gridColor,
-                "domainWidth": 1,
-                "grid": False,
-                "labelFont": font,
-                "labelFontSize": 12,
-                "labelAngle": 0, 
-                "tickColor": axisColor,
-                "tickSize": 5, # default, including it just to show you can change it
-                "titleFont": font,
-                "titleFontSize": 16,
-                "titlePadding": 10, # guessing, not specified in styleguide
-                "title": "X Axis Title (units)", 
-            },
-            "axisY": {
-                "domain": False,
-                "grid": True,
-                "gridColor": gridColor,
-                "gridWidth": 1,
-                "labelFont": font,
-                "labelFontSize": 14,
-                "labelAngle": 0, 
-                #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-                "titleFont": font,
-                "titleFontSize": 16,
-                "titlePadding": 10, # guessing, not specified in styleguide
-                "title": "Y Axis Title (units)", 
-                # titles are by default vertical left of axis so we need to hack this 
-                #"titleAngle": 0, # horizontal
-                #"titleY": -10, # move it up
-                #"titleX": 18, # move it to the right so it aligns with the labels 
-            },
-        }
-            }
+# def mds_special():
+#     font = "Arial"
+#     axisColor = "#000000"
+#     gridColor = "#DEDDDD"
+#     return {
+#         "config": {
+#         "title": {
+#                 "fontSize": 24,
+#                 "font": font,
+#                 "anchor": "start", # equivalent of left-aligned.
+#                 "fontColor": "#000000"
+#                 },
+#             'view': {
+#                 "height": 300, 
+#                 "width": 400
+#             },
+#             "axisX": {
+#                 "domain": True,
+#                 #"domainColor": axisColor,
+#                 "gridColor": gridColor,
+#                 "domainWidth": 1,
+#                 "grid": False,
+#                 "labelFont": font,
+#                 "labelFontSize": 12,
+#                 "labelAngle": 0, 
+#                 "tickColor": axisColor,
+#                 "tickSize": 5, # default, including it just to show you can change it
+#                 "titleFont": font,
+#                 "titleFontSize": 16,
+#                 "titlePadding": 10, # guessing, not specified in styleguide
+#                 "title": "X Axis Title (units)", 
+#             },
+#             "axisY": {
+#                 "domain": False,
+#                 "grid": True,
+#                 "gridColor": gridColor,
+#                 "gridWidth": 1,
+#                 "labelFont": font,
+#                 "labelFontSize": 14,
+#                 "labelAngle": 0, 
+#                 #"ticks": False, # even if you don't have a "domain" you need to turn these off.
+#                 "titleFont": font,
+#                 "titleFontSize": 16,
+#                 "titlePadding": 10, # guessing, not specified in styleguide
+#                 "title": "Y Axis Title (units)", 
+#                 # titles are by default vertical left of axis so we need to hack this 
+#                 #"titleAngle": 0, # horizontal
+#                 #"titleY": -10, # move it up
+#                 #"titleX": 18, # move it to the right so it aligns with the labels 
+#             },
+#         }
+#             }
 
 # register the custom theme under a chosen name
-alt.themes.register('mds_special', mds_special)
+# alt.themes.register('mds_special', mds_special)
 
 # enable the newly registered theme
-alt.themes.enable('mds_special')
+# alt.themes.enable('mds_special')
 #alt.themes.enable('none') # to return to default
 
 #### DEFINE PLOT 1a FUNCTION (continent)
@@ -94,7 +94,7 @@ def make_plot_1a():
     source = plot_a_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'], empty='none')
+                        fields=['year'])
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
@@ -386,6 +386,8 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
 
 #### SET UP LAYOUT
 app.layout = html.Div([
+
+    #// add jumbotron stuff here 
     html.Div(
         className="app-header",
         children=[
@@ -934,7 +936,7 @@ app.layout = html.Div([
                     {'label': 'male : 75+ years', 'value': 'male : 75+ years'},
                 ],
                 value = ['female : 25-34 years'],
-                labelStyle={'display': 'inline-block', 'text-align': 'justify'}
+
             ),
 
             #### IFRAME: PLOT 2b
