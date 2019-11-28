@@ -14,7 +14,7 @@ server = app.server
 app.title = 'Dash app with pure Altair HTML'
 
 
-#### LOAD AND PREPARE DATA (START)
+#### LOAD AND PREPARE DATA
 initial_df = pd.read_csv('https://raw.githubusercontent.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/master/data/SD_data_information.csv', index_col=0, parse_dates=True).reset_index()
 continent_df = pd.read_excel('https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/data/countryContinent_data_excel.xlsx?raw=true')
 final_df = initial_df.merge(continent_df, on='country', how='left')
@@ -22,69 +22,69 @@ final_df = final_df.drop(['country-year', ' gdp_for_year ($) ','HDI for year', '
 final_df = final_df.rename(columns={'gdp_per_capita ($)': 'gdp_per_capita_usd', 'code_3': 'country_code_name','suicides/100k pop':'suicides_per_100k_pop'})
 plot_a_data = final_df.query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','continent'],as_index = False).agg({"suicides_per_100k_pop":"mean","country":"nunique"})
 
+#### DEFINE THEME
+def mds_special():
+    font = "Arial"
+    axisColor = "#000000"
+    gridColor = "#DEDDDD"
+    return {
+        "config": {
+        "title": {
+                "fontSize": 24,
+                "font": font,
+                "anchor": "start", # equivalent of left-aligned.
+                "fontColor": "#000000"
+                },
+            'view': {
+                "height": 300, 
+                "width": 400
+            },
+            "axisX": {
+                "domain": True,
+                #"domainColor": axisColor,
+                "gridColor": gridColor,
+                "domainWidth": 1,
+                "grid": False,
+                "labelFont": font,
+                "labelFontSize": 12,
+                "labelAngle": 0, 
+                "tickColor": axisColor,
+                "tickSize": 5, # default, including it just to show you can change it
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10, # guessing, not specified in styleguide
+                "title": "X Axis Title (units)", 
+            },
+            "axisY": {
+                "domain": False,
+                "grid": True,
+                "gridColor": gridColor,
+                "gridWidth": 1,
+                "labelFont": font,
+                "labelFontSize": 14,
+                "labelAngle": 0, 
+                #"ticks": False, # even if you don't have a "domain" you need to turn these off.
+                "titleFont": font,
+                "titleFontSize": 16,
+                "titlePadding": 10, # guessing, not specified in styleguide
+                "title": "Y Axis Title (units)", 
+                # titles are by default vertical left of axis so we need to hack this 
+                #"titleAngle": 0, # horizontal
+                #"titleY": -10, # move it up
+                #"titleX": 18, # move it to the right so it aligns with the labels 
+            },
+        }
+            }
+
+# register the custom theme under a chosen name
+alt.themes.register('mds_special', mds_special)
+
+# enable the newly registered theme
+alt.themes.enable('mds_special')
+#alt.themes.enable('none') # to return to default
+
 #### DEFINE PLOT 1a FUNCTION (continent)
 def make_plot_1a(xval = 'Displacement'):
-
-    def mds_special():
-        font = "Arial"
-        axisColor = "#000000"
-        gridColor = "#DEDDDD"
-        return {
-            "config": {
-                "title": {
-                    "fontSize": 24,
-                    "font": font,
-                    "anchor": "start", # equivalent of left-aligned.
-                    "fontColor": "#000000"
-                },
-                'view': {
-                    "height": 300, 
-                    "width": 400
-                },
-                "axisX": {
-                    "domain": True,
-                    #"domainColor": axisColor,
-                    "gridColor": gridColor,
-                    "domainWidth": 1,
-                    "grid": False,
-                    "labelFont": font,
-                    "labelFontSize": 12,
-                    "labelAngle": 0, 
-                    "tickColor": axisColor,
-                    "tickSize": 5, # default, including it just to show you can change it
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "X Axis Title (units)", 
-                },
-                "axisY": {
-                    "domain": False,
-                    "grid": True,
-                    "gridColor": gridColor,
-                    "gridWidth": 1,
-                    "labelFont": font,
-                    "labelFontSize": 14,
-                    "labelAngle": 0, 
-                    #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "Y Axis Title (units)", 
-                    # titles are by default vertical left of axis so we need to hack this 
-                    #"titleAngle": 0, # horizontal
-                    #"titleY": -10, # move it up
-                    #"titleX": 18, # move it to the right so it aligns with the labels 
-                },
-            }
-                }
-
-    # register the custom theme under a chosen name
-    alt.themes.register('mds_special', mds_special)
-
-    # enable the newly registered theme
-    alt.themes.enable('mds_special')
-    #alt.themes.enable('none') # to return to default
-
     # Create a plot 1a
     source = plot_a_data.round(1)
 
@@ -126,64 +126,6 @@ def make_plot_1a(xval = 'Displacement'):
 
 #### DEFINE PLOT 1b FUNCTION (region)
 def make_plot_1b(selected_region = 'Select a Region Please'):
-
-    def mds_special():
-        font = "Arial"
-        axisColor = "#000000"
-        gridColor = "#DEDDDD"
-        return {
-            "config": {
-                "title": {
-                    "fontSize": 24,
-                    "font": font,
-                    "anchor": "start", # equivalent of left-aligned.
-                    "fontColor": "#000000"
-                },
-                'view': {
-                    "height": 300, 
-                    "width": 400
-                },
-                "axisX": {
-                    "domain": True,
-                    #"domainColor": axisColor,
-                    "gridColor": gridColor,
-                    "domainWidth": 1,
-                    "grid": False,
-                    "labelFont": font,
-                    "labelFontSize": 12,
-                    "labelAngle": 0, 
-                    "tickColor": axisColor,
-                    "tickSize": 5, # default, including it just to show you can change it
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "X Axis Title (units)", 
-                },
-                "axisY": {
-                    "domain": False,
-                    "grid": True,
-                    "gridColor": gridColor,
-                    "gridWidth": 1,
-                    "labelFont": font,
-                    "labelFontSize": 14,
-                    "labelAngle": 0, 
-                    #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "Y Axis Title (units)", 
-                    # titles are by default vertical left of axis so we need to hack this 
-                    #"titleAngle": 0, # horizontal
-                    #"titleY": -10, # move it up
-                    #"titleX": 18, # move it to the right so it aligns with the labels 
-                },
-            }
-                }
-
-    # register the custom theme under a chosen name
-    alt.themes.register('mds_special', mds_special)
-    # enable the newly registered theme
-    alt.themes.enable('mds_special')
 
     # Update Data source based on user selection:
     a = selected_region
@@ -231,66 +173,6 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
 #### DEFINE PLOT 1c FUNCTION (countries)
 def make_plot_1c(selected_country = 'Select a Country Please'):
 
-    def mds_special():
-        font = "Arial"
-        axisColor = "#000000"
-        gridColor = "#DEDDDD"
-        return {
-            "config": {
-                "title": {
-                    "fontSize": 24,
-                    "font": font,
-                    "anchor": "start", # equivalent of left-aligned.
-                    "fontColor": "#000000"
-                },
-                'view': {
-                    "height": 300, 
-                    "width": 400
-                },
-                "axisX": {
-                    "domain": True,
-                    #"domainColor": axisColor,
-                    "gridColor": gridColor,
-                    "domainWidth": 1,
-                    "grid": False,
-                    "labelFont": font,
-                    "labelFontSize": 12,
-                    "labelAngle": 0, 
-                    "tickColor": axisColor,
-                    "tickSize": 5, # default, including it just to show you can change it
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "X Axis Title (units)", 
-                },
-                "axisY": {
-                    "domain": False,
-                    "grid": True,
-                    "gridColor": gridColor,
-                    "gridWidth": 1,
-                    "labelFont": font,
-                    "labelFontSize": 14,
-                    "labelAngle": 0, 
-                    #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "Y Axis Title (units)", 
-                    # titles are by default vertical left of axis so we need to hack this 
-                    #"titleAngle": 0, # horizontal
-                    #"titleY": -10, # move it up
-                    #"titleX": 18, # move it to the right so it aligns with the labels 
-                },
-            }
-                }
-
-    # register the custom theme under a chosen name
-    alt.themes.register('mds_special', mds_special)
-
-    # enable the newly registered theme
-    alt.themes.enable('mds_special')
-    #alt.themes.enable('none') # to return to default
-
     # Update Data source based on user selection:
     a = selected_country
     plot_c_data = final_df.query('country in @a').query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','country'],as_index = False).agg({"suicides_per_100k_pop":"mean"})
@@ -337,85 +219,28 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
 #### DEFINE PLOT 2a FUNCTION (2 country comparison: avg total suicide rate)
 def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list = [0,0]):
 
-    def mds_special():
-        font = "Arial"
-        axisColor = "#000000"
-        gridColor = "#DEDDDD"
-        return {
-            "config": {
-                "title": {
-                    "fontSize": 24,
-                    "font": font,
-                    "anchor": "start", # equivalent of left-aligned.
-                    "fontColor": "#000000"
-                },
-                'view': {
-                    "height": 300, 
-                    "width": 400
-                },
-                "axisX": {
-                    "domain": True,
-                    #"domainColor": axisColor,
-                    "gridColor": gridColor,
-                    "domainWidth": 1,
-                    "grid": False,
-                    "labelFont": font,
-                    "labelFontSize": 12,
-                    "labelAngle": 0, 
-                    "tickColor": axisColor,
-                    "tickSize": 5, # default, including it just to show you can change it
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "X Axis Title (units)", 
-                },
-                "axisY": {
-                    "domain": False,
-                    "grid": True,
-                    "gridColor": gridColor,
-                    "gridWidth": 1,
-                    "labelFont": font,
-                    "labelFontSize": 14,
-                    "labelAngle": 0, 
-                    #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-                    "titleFont": font,
-                    "titleFontSize": 16,
-                    "titlePadding": 10, # guessing, not specified in styleguide
-                    "title": "Y Axis Title (units)", 
-                    # titles are by default vertical left of axis so we need to hack this 
-                    #"titleAngle": 0, # horizontal
-                    #"titleY": -10, # move it up
-                    #"titleX": 18, # move it to the right so it aligns with the labels 
-                },
-            }
-                }
-
-    # register the custom theme under a chosen name
-    alt.themes.register('mds_special', mds_special)
-
-    # enable the newly registered theme
-    alt.themes.enable('mds_special')
-    #alt.themes.enable('none') # to return to default
-
+    # Sets default values
     year_start = year_list[0]
     year_end = year_list[1]
 
     a = country_a
     b = country_b
 
-    #countries = [country_a, country_b]
-
     # Makes DataFrame of average suicide rates for the 2 countries
     data2a = final_df.query('suicides_per_100k_pop>0.1').query('year > @year_start & year < @year_end').query('country == @a | country == @b').groupby(['country']).agg({'suicides_per_100k_pop':'mean'})
     data2a = data2a.reset_index()
 
-    data2a = data2a.round(1)
+    # Rounds values to 2 decimal points
+    data2a = data2a.round(2)
+
+    # Plots chart
     chart_2a = alt.Chart(data2a).mark_bar().encode(
         color = alt.Color('country:N'),
-        x = alt.X('country:N', axis = alt.Axis(title = 'Countries', labelAngle = 0)),
-        y = alt.Y('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k people)', 
-                                                            labelAngle = 0))
-    ).properties(width = 300, height = 500,
+        x = alt.X('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k people)', 
+                                                            labelAngle = 0)),
+        y = alt.Y('country:N', axis = alt.Axis(title = 'Countries', labelAngle = 0)),
+        tooltip = ['suicides_per_100k_pop']
+    ).properties(width = 500, height = 300,
                 title = "Suicide Rate Per 100,000 People"
     ).configure_title(fontSize = 15
     ).configure_axis(labelFontSize = 12,
@@ -425,12 +250,8 @@ def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list 
     )
     return chart_2a
 
-
-
-
 #### SET UP LAYOUT
 app.layout = html.Div([
-
     html.Div(
         className="app-header",
         children=[
@@ -444,26 +265,9 @@ app.layout = html.Div([
         #### FIRST TAB
         dcc.Tab(label='Dashboard - Suicide Rate', value='tab-1', children = [
             
-            html.H3('Suicide Rate by Country'),
-            html.H4('Select one or multiple countries'),
-
-            dcc.Dropdown(
-            id='dd-country',
-            options=[
-                {'label': 'Africa', 'value': 'Africa','disabled': True},
-                {'label': 'Argentina', 'value': 'Argentina'},
-                {'label': 'Bolivia', 'value': 'Bolivia'},
-                {'label': 'Canada', 'value': 'Canada'}
-            ],
-            value='Please Select a Country',
-            multi=True,
-            style=dict(width='45%',
-                verticalAlign="middle"
-                )
-            ),
-
-            # Just to add some space
-            html.Iframe(height='200', width='10',style={'border-width': '0'}),
+            #### MAIN PAGE HEADER
+            html.H1('Tab 1 Title - need to change me'),
+            html.H2('Tab 1 Subtitle - change me too please'),
 
             #### IFRAME: PLOT 1A
             html.Iframe(
@@ -479,77 +283,99 @@ app.layout = html.Div([
             # Just to add some space
             html.Iframe(height='25', width='10',style={'border-width': '0'}),
 
+            #### DROPDOWNS: PLOT 1b
             html.H3('Suicide Rate by Region'),
             html.H4('Select one or multiple Regions'),
 
             dcc.Dropdown(
-            id='dd-chart',
-            options=[
-                {'label': 'Africa', 'value': 'Africa','disabled': True},
-                {'label': 'Eastern Africa', 'value': 'Eastern Africa'},
-                {'label': 'Middle Africa', 'value': 'Middle Africa'},
-                {'label': 'Northern Africa', 'value': 'Northern Africa'},
-                {'label': 'Southern Africa', 'value': 'Southern Africa'},
-                {'label': 'Western Africa', 'value': 'Western Africa'},
-                {'label': 'Americas', 'value': 'Americas','disabled': True},
-                {'label': 'Caribbean', 'value': 'Caribbean'},
-                {'label': 'Central America', 'value': 'Central America'},
-                {'label': 'Northern America', 'value': 'Northern America'},
-                {'label': 'South America', 'value': 'South America'},
-                {'label': 'Asia', 'value': 'Asia','disabled': True},
-                {'label': 'Central Asia', 'value': 'Central Asia'},
-                {'label': 'Eastern Asia', 'value': 'Eastern Asia'},
-                {'label': 'South-Eastern Asia', 'value': 'South-Eastern Asia'},
-                {'label': 'Southern Asia', 'value': 'Southern Asia'},
-                {'label': 'Western Asia', 'value': 'Western Asia'},
-                {'label': 'Europe', 'value': 'Europe','disabled': True},
-                {'label': 'Eastern Europe', 'value': 'Eastern Europe'},
-                {'label': 'Northern Europe', 'value': 'Northern Europe'},
-                {'label': 'Southern Europe', 'value': 'Southern Europe'},
-                {'label': 'Western Europe', 'value': 'Western Europe'},
-                {'label': 'Oceania', 'value': 'Oceania','disabled': True},
-                {'label': 'Australia and New Zealand', 'value': 'Australia and New Zealand'},
-                {'label': 'Melanesia', 'value': 'Melanesia'},
-                {'label': 'Micronesia', 'value': 'Micronesia'},        
-                {'label': 'Polynesia', 'value': 'Polynesia'}
-            ],
-            value='Central America',
-            multi=True,
-            style=dict(width='45%',
-                verticalAlign="middle"
-                )
-            ),
-            # Just to add some space
+                id='dd-chart',
+                options=[
+                    {'label': 'Africa', 'value': 'Africa','disabled': True},
+                    {'label': 'Eastern Africa', 'value': 'Eastern Africa'},
+                    {'label': 'Middle Africa', 'value': 'Middle Africa'},
+                    {'label': 'Northern Africa', 'value': 'Northern Africa'},
+                    {'label': 'Southern Africa', 'value': 'Southern Africa'},
+                    {'label': 'Western Africa', 'value': 'Western Africa'},
+                    {'label': 'Americas', 'value': 'Americas','disabled': True},
+                    {'label': 'Caribbean', 'value': 'Caribbean'},
+                    {'label': 'Central America', 'value': 'Central America'},
+                    {'label': 'Northern America', 'value': 'Northern America'},
+                    {'label': 'South America', 'value': 'South America'},
+                    {'label': 'Asia', 'value': 'Asia','disabled': True},
+                    {'label': 'Central Asia', 'value': 'Central Asia'},
+                    {'label': 'Eastern Asia', 'value': 'Eastern Asia'},
+                    {'label': 'South-Eastern Asia', 'value': 'South-Eastern Asia'},
+                    {'label': 'Southern Asia', 'value': 'Southern Asia'},
+                    {'label': 'Western Asia', 'value': 'Western Asia'},
+                    {'label': 'Europe', 'value': 'Europe','disabled': True},
+                    {'label': 'Eastern Europe', 'value': 'Eastern Europe'},
+                    {'label': 'Northern Europe', 'value': 'Northern Europe'},
+                    {'label': 'Southern Europe', 'value': 'Southern Europe'},
+                    {'label': 'Western Europe', 'value': 'Western Europe'},
+                    {'label': 'Oceania', 'value': 'Oceania','disabled': True},
+                    {'label': 'Australia and New Zealand', 'value': 'Australia and New Zealand'},
+                    {'label': 'Melanesia', 'value': 'Melanesia'},
+                    {'label': 'Micronesia', 'value': 'Micronesia'},        
+                    {'label': 'Polynesia', 'value': 'Polynesia'}
+                ],
+                value='Central America',
+                multi=True,
+                style=dict(width='45%',
+                    verticalAlign="middle"
+                    )
+                ),
+            
+            # Add space
             html.Iframe(height='200', width='10',style={'border-width': '0'}),
 
             #### IFRAME: PLOT 1b
             html.Iframe(
-            sandbox='allow-scripts',
-            id='plot_1b',
-            height='300',
-            width='1500',
-            style={'border-width': '0'},
-            ################ The magic happens here
-            srcDoc=make_plot_1b().to_html()
-            ################ The magic happens here
-            ),
+                sandbox='allow-scripts',
+                id='plot_1b',
+                height='300',
+                width='1500',
+                style={'border-width': '0'}
+                ),
+
+            #### DROPDOWNS: PLOT 1c
+            html.H3('Suicide Rate by Country'),
+            html.H4('Select one or multiple countries'),
+            dcc.Dropdown(
+                id='dd-country',
+                options=[
+                    {'label': 'Africa', 'value': 'Africa','disabled': True},
+                    {'label': 'Argentina', 'value': 'Argentina'},
+                    {'label': 'Bolivia', 'value': 'Bolivia'},
+                    {'label': 'Canada', 'value': 'Canada'}
+                ],
+                value='Please Select a Country',
+                multi=True,
+                style=dict(width='45%',
+                    verticalAlign="middle"
+                    )
+                ),
 
             #### IFRAME: PLOT 1c
             html.Iframe(
-            sandbox='allow-scripts',
-            id='plot_1c',
-            height='300',
-            width='1500',
-            style={'border-width': '0'},
-            ################ The magic happens here
-            srcDoc=make_plot_1c().to_html()
-            ################ The magic happens here
-            ),
+                sandbox='allow-scripts',
+                id='plot_1c',
+                height='300',
+                width='1500',
+                style={'border-width': '0'},
+                ),
 
+            # Add space
             html.Iframe(height='25', width='10',style={'border-width': '0'}),
             ]),
+
         #### TAB 2
         dcc.Tab(label='Country Comparison', value='tab-2', children = [
+
+            #### MAIN PAGE HEADER
+            html.H1('Tab 2 Title - need to change me'),
+            html.H2('Tab 2 Subtitle - change me too please'),
+
+            #### DROPDOWNS: PLOT 2a
             dcc.Dropdown(
                 id = 'country_a_dropdown',
                 options=[
@@ -655,7 +481,7 @@ app.layout = html.Div([
                     {'label': 'Uruguay', 'value': 'Uruguay'},
                     {'label': 'Uzbekistan', 'value': 'Uzbekistan'}
                 ],
-                value = 'Albania',
+                value = 'United States',
                 style = dict(width = '45%',
                         verticalAlign = 'middle')
             ),
@@ -765,7 +591,7 @@ app.layout = html.Div([
                     {'label': 'Uruguay', 'value': 'Uruguay'},
                     {'label': 'Uzbekistan', 'value': 'Uzbekistan'}
                 ],
-                value = 'Albania',
+                value = 'Canada',
                 style = dict(width = '45%',
                         verticalAlign = 'middle')
             ),
@@ -807,26 +633,22 @@ app.layout = html.Div([
                 value = [1986, 2014]
                 ),
 
+            #### IFRAME: PLOT 2a
             html.Iframe(
                 sandbox='allow-scripts',
                 id='plot2a',
-                height='300',
+                height='1000',
                 width='1500',
                 style={'border-width': '0'},
-                ################ The magic happens here
-                #srcDoc=make_plot2a().to_html() # This line is not necessary
-                ################ The magic happens here
                 ),
                 
-            # Just to add some space
+            # Add space
             html.Iframe(height='25', width='10',style={'border-width': '0'}),
 
         ]),
     ]),    
 
-    #### MAIN PAGE HEADER
-    html.H1('WorldWide Rate'),
-    html.H2('Testing Subtitle'),
+
 
 ])
 
@@ -835,9 +657,7 @@ app.layout = html.Div([
     dash.dependencies.Output('plot_1b', 'srcDoc'),
     [dash.dependencies.Input('dd-chart', 'value')])
 def update_plot_1b(sub_region):
-
     updated_plot_1b = make_plot_1b(sub_region).to_html()
-
     return updated_plot_1b
 
 #### DECORATOR: PLOT 1C
@@ -845,9 +665,7 @@ def update_plot_1b(sub_region):
     dash.dependencies.Output('plot_1c', 'srcDoc'),
     [dash.dependencies.Input('dd-country', 'value')])
 def update_plot_1c(country):
-
     updated_plot_1c = make_plot_1c(country).to_html()
-
     return updated_plot_1c
 
 #### DECORATOR: PLOT 2a
