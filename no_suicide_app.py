@@ -24,7 +24,7 @@ final_df["age"]= final_df["age"].str.replace("5-14", "05-14", case = False)
 final_df['demo_group'] = final_df["sex"].map(str) +[" : "]+ final_df["age"]
 plot_a_data = final_df.query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','continent'],as_index = False).agg({"suicides_per_100k_pop":"mean","country":"nunique"})
 general_data = final_df.query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year'],as_index = False).agg({"suicides_per_100k_pop":"mean","country":"nunique"})
-general_data['Label'] = 'Worldwide Benchmark'
+general_data['Label'] = 'Worldwide Average'
 
 
 #### DEFINE THEME
@@ -96,7 +96,7 @@ def make_plot_1a():
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'])
     line= alt.Chart(source).mark_line(point=False).encode(
-        x = alt.X('year:O',axis=alt.Axis(title='Date:Year', grid=False)),
+        x = alt.X('year:O',axis=alt.Axis(title='Year', grid=False,labelAngle=-45)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
         color = alt.Color('continent',legend=alt.Legend(title="Legend"))
     ).properties(
@@ -121,8 +121,8 @@ def make_plot_1a():
     ).transform_filter(
         nearest
     )
-    line2 = alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
-    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    line2 = alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
     y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
     color = alt.Color('Label',legend=alt.Legend())
     )
@@ -152,7 +152,7 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'], empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
-        x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+        x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
         color = alt.Color('sub_region',legend=alt.Legend(title = 'Legend'))
     ).properties(
@@ -177,8 +177,8 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
     ).transform_filter(
         nearest
     )
-    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
-    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
     y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
     color = alt.Color('Label',legend=alt.Legend())
     )
@@ -208,7 +208,7 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'], empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
-        x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+        x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
         color = alt.Color('country',legend=alt.Legend(title='Legend'))
     ).properties(
@@ -233,8 +233,8 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
     ).transform_filter(
         nearest
     )
-    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
-    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
     y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
     color = alt.Color('Label',legend=alt.Legend())
     )
@@ -264,7 +264,7 @@ def make_plot_1d(selected_country = 'Select a Country Please'):
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'], empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
-        x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+        x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
         color = alt.Color('demo_group',legend=alt.Legend(title='Legend'))
     ).properties(
@@ -289,8 +289,8 @@ def make_plot_1d(selected_country = 'Select a Country Please'):
     ).transform_filter(
         nearest
     )
-    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[1,5],interpolate ='monotone',size =5,color="#FFAA00").encode(
-    x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
+    line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
+    x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
     y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
     color = alt.Color('Label',legend=alt.Legend())
     )
@@ -397,11 +397,15 @@ app.layout = html.Div([
     #### ADD TABS TO TOP OF PAGE
     dcc.Tabs(id='tabs', value='tab1', children=[
         #### TAB 1
-        dcc.Tab(label='Dashboard - Suicide Rate', value='tab-1', children = [
+        dcc.Tab(label='Continent-Region-Country Analysis', value='tab-1', children = [
             
             #### MAIN PAGE HEADER
-            html.H1('Tab 1 Title - need to change me'),
-            html.H2('Tab 1 Subtitle - change me too please'),
+            #html.H1('Understanding Suicide Rate Historical Behavior'),
+            html.H2('Continent - Region - Country Analysis'),
+             # Just to add some space
+            html.Iframe(height='5', width='05',style={'border-width': '0'}),
+            html.H3('Suicide Rate by Continent'),
+
 
             # Text for Plot 1a
             html.Div([html.P('''Step 1: This graph shows the average suicide rate over time, by continent. The dashed line shows the worldwide average for each year. You can hover over each line to see the exact suicide rate for that continent and year. ''')]),
@@ -420,11 +424,12 @@ app.layout = html.Div([
             # Just to add some space
             html.Iframe(height='25', width='10',style={'border-width': '0'}),
 
-            # Text for Plot 1b
-            html.Div([html.P('''Step 2: Are there any sub-regions you are specifically interested in looking at? You can use this drop-down to select one or more sub-regions (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that sub-region and year. The dashed line shows the worldwide average for each year.''')]), 
+            
             
             #### DROPDOWNS: PLOT 1b
             html.H3('Suicide Rate by Region'),
+            # Text for Plot 1b
+            html.Div([html.P('''Step 2: Are there any sub-regions you are specifically interested in looking at? You can use this drop-down to select one or more sub-regions (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that sub-region and year. The dashed line shows the worldwide average for each year.''')]), 
             html.H4('Select one or multiple Regions'),
 
             dcc.Dropdown(
@@ -480,10 +485,11 @@ app.layout = html.Div([
              # Text for Plot 1b
             
             # Text for Plot 1c
-            html.Div([html.P('''Step 3: Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more? Use the drop-down to select one or more countries (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that country and year. The dashed line shows the worldwide average for each year.''')]),
+            html.Iframe(height='25', width='10',style={'border-width': '0'}),
             
             #### DROPDOWNS: PLOT 1c
             html.H3('Suicide Rate by Country'),
+            html.Div([html.P('''Step 3: Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more? Use the drop-down to select one or more countries (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that country and year. The dashed line shows the worldwide average for each year.''')]),
             html.H4('Select one or multiple countries'),
             dcc.Dropdown(
                 id='dd-country',
@@ -609,8 +615,9 @@ app.layout = html.Div([
                 width='1500',
                 style={'border-width': '0'},
                 ),
-            
+            html.Iframe(height='25', width='10',style={'border-width': '0'}),
             # Text for Plot 1d
+            html.H3('Suicide Rate by Demographic Groups'),
             html.Div([html.P('''Step 4: You may be wondering what factors other than location affect the suicide rate. Make sure you have at least one country selected above, and then this graph will automatically show the average suicide rates for 12 demographic groups (based on age and gender) over time. If you have chosen multiple countries, it will display the average suicide rate for each of the 12 demographic groups of all selected countries. You can hover over each line to see the exact suicide rate for that country/countries and demographic group. The dashed line shows the worldwide average for each year.''')]),
             
             #### IFRAME: PLOT 1d
@@ -627,11 +634,11 @@ app.layout = html.Div([
             ]),
 
         #### TAB 2
-        dcc.Tab(label='Country Comparison', value='tab-2', children = [
+        dcc.Tab(label='Two Country Comparison', value='tab-2', children = [
 
             #### MAIN PAGE HEADER
-            html.H1('Tab 2 Title - need to change me'),
-            html.H2('Tab 2 Subtitle - change me too please'),
+            #html.H1('Understanding Suicide Rate Historical Behavior'),
+            html.H2('Two Country Comparison'),
 
             # Add space
             html.Iframe(height='20', width='10',style={'border-width': '0'}),
