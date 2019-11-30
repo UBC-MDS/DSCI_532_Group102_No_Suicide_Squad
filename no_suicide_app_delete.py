@@ -2,11 +2,10 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 import altair as alt
 import vega_datasets
-import dash_bootstrap_components as dbc
 
 app = dash.Dash(__name__, assets_folder='assets', external_stylesheets=external_stylesheets)
 app.config['suppress_callback_exceptions'] = True
@@ -35,7 +34,7 @@ def make_plot_1a():
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
                         fields=['year'])
     line= alt.Chart(source).mark_line(point=False).encode(
-        x = alt.X('year:O',axis=alt.Axis(title='Date:Year', grid=False)),
+        x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
         color = alt.Color('continent',legend=alt.Legend(title="Legend"))
     ).properties(
@@ -89,7 +88,7 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
     source = plot_b_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'])
+                        fields=['year'], empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
@@ -145,7 +144,7 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
     source = plot_c_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'])
+                        fields=['year'], empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
@@ -201,7 +200,7 @@ def make_plot_1d(selected_country = 'Select a Country Please'):
     source = plot_d_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'])
+                        fields=['year'], empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Date:Year')),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
@@ -290,6 +289,7 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
     a = country_a
     b = country_b
     
+    #demo_selection = ['female : 05-14 years', 'female : 15-24 years', 'female : 25-34 years', 'male : 05-14 years', 'male : 15-24 years', 'male: 25-34 years']
     d = demo_selection
 
     # Makes DataFrame of average suicide rates for the 2 countries by demo group
@@ -324,28 +324,14 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
 
 #### SET UP LAYOUT
 app.layout = html.Div([
-    dbc.Jumbotron([
-        dbc.Container([
-            html.H1("Understanding Suicide Rates", className = 'display-3'),
-            dcc.Markdown(
-                '''
-                The purpose of this app is to help you visualize suicide rates in different locations over time, and how a variety of different factors (i.e. age, gender, and year) affect these rates. 
 
-                We have 2 main questions we are trying to answer: 
-
-                **Tab 1**: How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this?  
-                **Tab 2**: How does the suicide rate of one coountry compare against the suicide rate of another country? 
-
-                Please click on a tab to get started! 
-
-                **If you have thoughts of suicide, please reach out to your local Crisis Centre or Suicide Prevention Hotline.**  
-                **In BC, you can get help by visiting [www.crisiscentre.bc.ca](https://crisiscentre.bc.ca) or by calling 1-800-784-2433 from anywhere in the province.**
-                '''
-                )
-        ],
-        )
-    ]), 
-
+    #// add jumbotron stuff here 
+    html.Div(
+        className="app-header",
+        children=[
+            html.Div('Suicide Rate Dashboard', className="app-header--title")
+        ]
+    ),    
     #### ADD TABS TO TOP OF PAGE
     dcc.Tabs(id='tabs', value='tab1', children=[
         #### TAB 1
@@ -901,6 +887,27 @@ app.layout = html.Div([
                 ),
         ]),
     ]),    
+
+    #### MAIN TAB TEXT
+    html.Div([
+        html.P('''
+        Welcome to our virtual dashboard! The purpose of this app is to help you visualize suicide rates in different locations over time, and how a variety of different factors (i.e. age, gender, and year) affect these rates. 
+        We have 2 main questions we are trying to answer: 
+        '''),
+        html.P('''
+        Tab 1: How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this? 
+        '''),
+        html.P('''
+        Tab 2: How does the suicide rate of one coountry compare against the suicide rate of another country? 
+        '''),
+        html.P('''
+        Please click on a tab to get started! 
+        '''),    
+        html.P('''
+        If you have thoughts of suicide, please do not hesitate to reach out to your local Crisis Centre or Suicide Prevention Hotline. In British Columbia, you can get help by visiting www.crisiscentre.bc.ca or by calling 1-800-784-2433 from anywhere in the province.
+        ''')
+    ]),
+
 
 ])
 
