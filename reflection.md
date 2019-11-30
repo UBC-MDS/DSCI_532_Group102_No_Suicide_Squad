@@ -19,7 +19,7 @@
 
 - There is missing data for certain countries, years, and demographics, so if a user selects these locations/demographics, the charts may not look updated, which can cause confusion.
 
-<br/> <br/>
+<br/> 
 
 #### Tab 2
 - If the user does not open the graph in a full-screen window, the year range slider does not change in size, and as a result, appears squished. 
@@ -33,7 +33,7 @@
 
 - We could remove the locations/demographics with missing data.
 
-<br/> <br/>
+<br/> 
 
 #### Tab 2
 - For the non-full-screen issues, we should find a way to resize the slider so it appears proportionally on a window of any size. 
@@ -45,12 +45,12 @@
 #### Issues
 We were reminded to use GitHub Issues to communicate with our team. We were previously using Slack, but started creating Issues to allow us to locate our action items in a more centralized location. This also helps us keep track of what has been resolved and what still needs to be done. 
 
-<br/> <br/>
+<br/> 
 
 #### Coding and Submitting Pull Requests
 We were reminded to make sure that the work is being distributed equally. To resolve this, we each tackled certain issues and code chunks (e.g. two graphs each). Please note that sometimes we only worked off one computer due to dying laptops/internet connectivity issues. 
 
-<br/> <br/>
+<br/> 
 
 #### General Milestone 1 Feedback
 We ensured that the links on our repos linked to specific commits. We also added instructions/a “narrative” to our app to help the user navigate our app. 
