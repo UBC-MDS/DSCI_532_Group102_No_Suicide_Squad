@@ -2,10 +2,11 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 import altair as alt
 import vega_datasets
+import dash_bootstrap_components as dbc
 
 app = dash.Dash(__name__, assets_folder='assets', external_stylesheets=external_stylesheets)
 app.config['suppress_callback_exceptions'] = True
@@ -25,68 +26,6 @@ final_df['demo_group'] = final_df["sex"].map(str) +[" : "]+ final_df["age"]
 plot_a_data = final_df.query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','continent'],as_index = False).agg({"suicides_per_100k_pop":"mean","country":"nunique"})
 general_data = final_df.query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year'],as_index = False).agg({"suicides_per_100k_pop":"mean","country":"nunique"})
 general_data['Label'] = 'Worldwide Average'
-
-
-#### DEFINE THEME
-# def mds_special():
-#     font = "Arial"
-#     axisColor = "#000000"
-#     gridColor = "#DEDDDD"
-#     return {
-#         "config": {
-#         "title": {
-#                 "fontSize": 24,
-#                 "font": font,
-#                 "anchor": "start", # equivalent of left-aligned.
-#                 "fontColor": "#000000"
-#                 },
-#             'view': {
-#                 "height": 300, 
-#                 "width": 400
-#             },
-#             "axisX": {
-#                 "domain": True,
-#                 #"domainColor": axisColor,
-#                 "gridColor": gridColor,
-#                 "domainWidth": 1,
-#                 "grid": False,
-#                 "labelFont": font,
-#                 "labelFontSize": 12,
-#                 "labelAngle": 0, 
-#                 "tickColor": axisColor,
-#                 "tickSize": 5, # default, including it just to show you can change it
-#                 "titleFont": font,
-#                 "titleFontSize": 16,
-#                 "titlePadding": 10, # guessing, not specified in styleguide
-#                 "title": "X Axis Title (units)", 
-#             },
-#             "axisY": {
-#                 "domain": False,
-#                 "grid": True,
-#                 "gridColor": gridColor,
-#                 "gridWidth": 1,
-#                 "labelFont": font,
-#                 "labelFontSize": 14,
-#                 "labelAngle": 0, 
-#                 #"ticks": False, # even if you don't have a "domain" you need to turn these off.
-#                 "titleFont": font,
-#                 "titleFontSize": 16,
-#                 "titlePadding": 10, # guessing, not specified in styleguide
-#                 "title": "Y Axis Title (units)", 
-#                 # titles are by default vertical left of axis so we need to hack this 
-#                 #"titleAngle": 0, # horizontal
-#                 #"titleY": -10, # move it up
-#                 #"titleX": 18, # move it to the right so it aligns with the labels 
-#             },
-#         }
-#             }
-
-# register the custom theme under a chosen name
-# alt.themes.register('mds_special', mds_special)
-
-# enable the newly registered theme
-# alt.themes.enable('mds_special')
-#alt.themes.enable('none') # to return to default
 
 #### DEFINE PLOT 1a FUNCTION (continent)
 def make_plot_1a():
@@ -150,7 +89,7 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
     source = plot_b_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'], empty='none')
+                        fields=['year'])
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
@@ -206,7 +145,7 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
     source = plot_c_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'], empty='none')
+                        fields=['year'])
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
@@ -262,7 +201,7 @@ def make_plot_1d(selected_country = 'Select a Country Please'):
     source = plot_d_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'], empty='none')
+                        fields=['year'])
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
         y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
@@ -351,7 +290,6 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
     a = country_a
     b = country_b
     
-    #demo_selection = ['female : 05-14 years', 'female : 15-24 years', 'female : 25-34 years', 'male : 05-14 years', 'male : 15-24 years', 'male: 25-34 years']
     d = demo_selection
 
     # Makes DataFrame of average suicide rates for the 2 countries by demo group
@@ -386,14 +324,28 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
 
 #### SET UP LAYOUT
 app.layout = html.Div([
+    dbc.Jumbotron([
+        dbc.Container([
+            html.H1("Understanding Suicide Rates", className = 'display-3'),
+            dcc.Markdown(
+                '''
+                The purpose of this app is to help you visualize suicide rates in different locations over time, and how a variety of different factors (i.e. age, gender, and year) affect these rates. 
 
-    #// add jumbotron stuff here 
-    html.Div(
-        className="app-header",
-        children=[
-            html.Div('Suicide Rate Dashboard', className="app-header--title")
-        ]
-    ),    
+                We have 2 main questions we are trying to answer: 
+
+                **Tab 1**: How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this?  
+                **Tab 2**: How does the suicide rate of one coountry compare against the suicide rate of another country? 
+
+                Please click on a tab to get started! 
+
+                **If you have thoughts of suicide, please reach out to your local Crisis Centre or Suicide Prevention Hotline.**  
+                **In BC, you can get help by visiting [www.crisiscentre.bc.ca](https://crisiscentre.bc.ca) or by calling 1-800-784-2433 from anywhere in the province.**
+                '''
+                )
+        ],
+        )
+    ]), 
+
     #### ADD TABS TO TOP OF PAGE
     dcc.Tabs(id='tabs', value='tab1', children=[
         #### TAB 1
@@ -956,27 +908,6 @@ app.layout = html.Div([
                 ),
         ]),
     ]),    
-
-    #### MAIN TAB TEXT
-    html.Div([
-        html.P('''
-        Welcome to our virtual dashboard! The purpose of this app is to help you visualize suicide rates in different locations over time, and how a variety of different factors (i.e. age, gender, and year) affect these rates. 
-        We have 2 main questions we are trying to answer: 
-        '''),
-        html.P('''
-        Tab 1: How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this? 
-        '''),
-        html.P('''
-        Tab 2: How does the suicide rate of one coountry compare against the suicide rate of another country? 
-        '''),
-        html.P('''
-        Please click on a tab to get started! 
-        '''),    
-        html.P('''
-        If you have thoughts of suicide, please do not hesitate to reach out to your local Crisis Centre or Suicide Prevention Hotline. In British Columbia, you can get help by visiting www.crisiscentre.bc.ca or by calling 1-800-784-2433 from anywhere in the province.
-        ''')
-    ]),
-
 
 ])
 
