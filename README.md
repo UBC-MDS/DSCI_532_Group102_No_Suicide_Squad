@@ -3,7 +3,7 @@ DSCI 532 Lab 1 Group 102: Anny Chih, Suvarna Moharir, &amp; Manuel Maldonado Agu
 
 [Understanding Suicide Rates App Link](https://dsci-532-group102-milestone2.herokuapp.com/)
 
-**Note: The original proposed app sketches are still available at the bottom of this README file**
+**Note: The original proposed app sketches are still available at the bottom of this README file** 
 
 ### DESCRIPTION OF THE APP
 The purpose of this app is to help you visualize suicide rates in different locations over time, and see how a variety of different factors (i.e. age, gender, and year) affect these rates. There are 2 main research questions the app aims to answer using 2 tabs: 
