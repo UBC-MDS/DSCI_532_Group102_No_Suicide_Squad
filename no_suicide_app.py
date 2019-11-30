@@ -307,7 +307,7 @@ def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list 
     # Plots chart
     chart_2b = alt.Chart(data2b).mark_bar(size = 40).encode(
         color = alt.Color('country:N'),
-        y = alt.Y('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k people)', 
+        y = alt.Y('suicides_per_100k_pop:Q', axis = alt.Axis(title = 'Average Suicide Rate (per 100k pop)', 
                                                             labelAngle = 0)),
         x = alt.X('country:N', axis = None),
         tooltip = ['suicides_per_100k_pop'],
@@ -329,12 +329,11 @@ app.layout = html.Div([
             html.H1("Understanding Suicide Rates", className = 'display-3'),
             dcc.Markdown(
                 '''
-                The purpose of this app is to help you visualize suicide rates in different locations over time, and how a variety of different factors (i.e. age, gender, and year) affect these rates. 
-
+                The purpose of this app is to help you visualize suicide rates in different locations over time, and see how a variety of different factors (i.e. age, gender, and year) affect these rates. 
                 We have 2 main questions we are trying to answer: 
 
                 **Tab 1**: How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this?  
-                **Tab 2**: How does the suicide rate of one coountry compare against the suicide rate of another country? 
+                **Tab 2**: How does the suicide rate of one country compare against the suicide rate of another country? 
 
                 Please click on a tab to get started! 
 
@@ -349,7 +348,7 @@ app.layout = html.Div([
     #### ADD TABS TO TOP OF PAGE
     dcc.Tabs(id='tabs', value='tab1', children=[
         #### TAB 1
-        dcc.Tab(label='Continent-Region-Country Analysis', value='tab-1', children = [
+        dcc.Tab(label='Tab 1: Continent-Region-Country Analysis', value='tab-1', children = [
             
             #### MAIN PAGE HEADER
             #html.H1('Understanding Suicide Rate Historical Behavior'),
@@ -360,7 +359,9 @@ app.layout = html.Div([
 
 
             # Text for Plot 1a
-            html.Div([html.P('''Step 1: This graph shows the average suicide rate over time, by continent. The dashed line shows the worldwide average for each year. You can hover over each line to see the exact suicide rate for that continent and year. ''')]),
+            html.Div([dcc.Markdown('''**Step 1:** This graph shows the average suicide rate over time, by continent.  
+            The dashed line shows the worldwide average for each year.  
+            You can hover over each line to see the exact suicide rate for that continent and year. ''')]),
 
             #### IFRAME: PLOT 1a
             html.Iframe(
@@ -381,7 +382,9 @@ app.layout = html.Div([
             #### DROPDOWNS: PLOT 1b
             html.H3('Suicide Rate by Region'),
             # Text for Plot 1b
-            html.Div([html.P('''Step 2: Are there any sub-regions you are specifically interested in looking at? You can use this drop-down to select one or more sub-regions (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that sub-region and year. The dashed line shows the worldwide average for each year.''')]), 
+            html.Div([dcc.Markdown('''**Step 2:** Are there any sub-regions you are specifically interested in looking at?  
+            You can use this drop-down to select one or more sub-regions (arranged by continent) to view the average suicide rate by year.  
+            You can hover over each line to see the exact suicide rate for that sub-region and year. The dashed line shows the worldwide average for each year.''')]), 
             html.H4('Select one or multiple Regions'),
 
             dcc.Dropdown(
@@ -441,7 +444,9 @@ app.layout = html.Div([
             
             #### DROPDOWNS: PLOT 1c
             html.H3('Suicide Rate by Country'),
-            html.Div([html.P('''Step 3: Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more? Use the drop-down to select one or more countries (arranged by continent) to view the average suicide rate by year. You can hover over each line to see the exact suicide rate for that country and year. The dashed line shows the worldwide average for each year.''')]),
+            html.Div([dcc.Markdown('''**Step 3:** Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more?  
+            Use the drop-down to select one or more countries (arranged by continent) to view the average suicide rate by year.  
+            You can hover over each line to see the exact suicide rate for that country and year. The dashed line shows the worldwide average for each year.''')]),
             html.H4('Select one or multiple countries'),
             dcc.Dropdown(
                 id='dd-country',
@@ -570,7 +575,10 @@ app.layout = html.Div([
             html.Iframe(height='25', width='10',style={'border-width': '0'}),
             # Text for Plot 1d
             html.H3('Suicide Rate by Demographic Groups'),
-            html.Div([html.P('''Step 4: You may be wondering what factors other than location affect the suicide rate. Make sure you have at least one country selected above, and then this graph will automatically show the average suicide rates for 12 demographic groups (based on age and gender) over time. If you have chosen multiple countries, it will display the average suicide rate for each of the 12 demographic groups of all selected countries. You can hover over each line to see the exact suicide rate for that country/countries and demographic group. The dashed line shows the worldwide average for each year.''')]),
+            html.Div([dcc.Markdown('''**Step 4:** You may be wondering what factors other than location affect the suicide rate.  
+            Make sure you have at least one country selected above, and then this graph will automatically show the average suicide rates for 12 demographic groups (based on age and gender) over time.  
+            If you have chosen multiple countries, it will display the average suicide rate for each of the 12 demographic groups of all selected countries.  
+            You can hover over each line to see the exact suicide rate for that country/countries and demographic group. The dashed line shows the worldwide average for each year.''')]),
             
             #### IFRAME: PLOT 1d
             html.Iframe(
@@ -586,7 +594,7 @@ app.layout = html.Div([
             ]),
 
         #### TAB 2
-        dcc.Tab(label='Two Country Comparison', value='tab-2', children = [
+        dcc.Tab(label='Tab 2: Two Country Comparison', value='tab-2', children = [
 
             #### MAIN PAGE HEADER
             #html.H1('Understanding Suicide Rate Historical Behavior'),
@@ -596,7 +604,7 @@ app.layout = html.Div([
             html.Iframe(height='20', width='10',style={'border-width': '0'}),
 
             # Text for Plot 2a - Country Dropdowns
-            html.Div([html.P('''Step 1: Pick 2 countries that you would like to compare. Select them in each dropdown (1 country per dropdown).''')]),
+            html.Div([dcc.Markdown('''**Step 1:** Pick 2 countries that you would like to compare. Select them in each dropdown (1 country per dropdown).''')]),
 
             #### DROPDOWNS: PLOT 2a
             dcc.Dropdown(
@@ -823,7 +831,8 @@ app.layout = html.Div([
             html.Iframe(height='20', width='10',style={'border-width': '0'}),
 
             # Text for Plot 2a - Year Slider
-            html.Div([html.P('''Step 2: Pick a range of years that you are interested in looking into. Use the slider to select this range. The graph below will show the average suicide rate for the year range selected for each of the 2 countries. ''')]),
+            html.Div([dcc.Markdown('''**Step 2:** Pick a range of years that you are interested in looking into. Use the slider to select this range.  
+            The graph below will show the average suicide rate for the year range selected for each of the 2 countries.''')]),
             
             dcc.RangeSlider(
                 id='my-range-slider',
@@ -875,7 +884,8 @@ app.layout = html.Div([
                 ),
             
              # Text for Plot 2b
-            html.Div([html.P('''Step 3: You might be wondering about how the suicide rate for the 2 countries changes by demographic group. You can select one or more demographic groups (by gender and age) to see the different suicide rates by demographic group for your 2 chosen countries. ''')]),
+            html.Div([dcc.Markdown('''**Step 3:** You might be wondering about how the suicide rate for the 2 countries changes by demographic group.  
+            You can select one or more demographic groups (gender and age) to see the different suicide rates by demographic group for your 2 chosen countries.''')]),
 
             #### DROPDOWNS: PLOT 2b
             dcc.Checklist(
@@ -885,13 +895,13 @@ app.layout = html.Div([
                     {'label': 'female : 15-24 years', 'value': 'female : 15-24 years'},
                     {'label': 'female : 25-34 years', 'value': 'female : 25-34 years'},
                     {'label': 'female : 35-54 years', 'value': 'female : 35-54 years'},
-                    {'label': 'female : 54-74 years', 'value': 'female : 54-74 years'},
+                    {'label': 'female : 55-74 years', 'value': 'female : 55-74 years'},
                     {'label': 'female : 75+ years', 'value': 'female : 75+ years'},
                     {'label': 'male : 05-14 years', 'value': 'male : 05-14 years'},
                     {'label': 'male : 15-24 years', 'value': 'male : 15-24 years'},
                     {'label': 'male : 25-34 years', 'value': 'male : 25-34 years'},
                     {'label': 'male : 35-54 years', 'value': 'male : 35-54 years'},
-                    {'label': 'male : 54-74 years', 'value': 'male : 54-74 years'},
+                    {'label': 'male : 55-74 years', 'value': 'male : 55-74 years'},
                     {'label': 'male : 75+ years', 'value': 'male : 75+ years'},
                 ],
                 value = ['female : 25-34 years'],
