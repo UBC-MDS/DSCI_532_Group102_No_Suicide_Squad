@@ -8,31 +8,31 @@ DSCI 532 Lab 1 Group 102: Anny Chih, Suvarna Moharir, &amp; Manuel Maldonado Agu
 ### DESCRIPTION OF THE APP
 The purpose of this app is to help you visualize suicide rates in different locations over time, and see how a variety of different factors (i.e. age, gender, and year) affect these rates. There are 2 main research questions the app aims to answer using 2 tabs: 
 
-**Tab 1:** How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this?
+**Tab 1:** How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this?  
 **Tab 2:** How does the suicide rate of one country compare against the suicide rate of another country? 
 
-#### Tab 1: Continent-Region-Country Analysis
-### Suicide Rate by Continent ###
+### Tab 1: Continent-Region-Country Analysis
+#### Suicide Rate by Continent
 **Step 1:** This graph shows the average suicide rate over time, by continent.
 The dashed line shows the worldwide average for each year.
 You can hover over each line to see the exact suicide rate for that continent and year.
 
 ![plot_1a](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_1a.png)
 
-### Suicide Rate by Region ###
+#### Suicide Rate by Region
 **Step 2:** Are there any sub-regions you are specifically interested in looking at?
 You can use this drop-down to select one or more sub-regions (arranged by continent) to view the average suicide rate by year.
 You can hover over each line to see the exact suicide rate for that sub-region and year. The dashed line shows the worldwide average for each year.
 ![plot_1b](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_1b.png)
 
-### Suicide Rate by Country ###
+#### Suicide Rate by Country
 **Step 3:** Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more?
 Use the drop-down to select one or more countries (arranged by continent) to view the average suicide rate by year.
 You can hover over each line to see the exact suicide rate for that country and year. The dashed line shows the worldwide average for each year.
 
 ![plot_1c](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_1c.png)
 
-### Suicide Rate by Demographic Groups ###
+#### Suicide Rate by Demographic Groups
 **Step 4:** You may be wondering what factors other than location affect the suicide rate.
 Make sure you have at least one country selected above, and then this graph will automatically show the average suicide rates for 12 demographic groups (based on age and gender) over time.
 If you have chosen multiple countries, it will display the average suicide rate for each of the 12 demographic groups of all selected countries.
@@ -40,18 +40,18 @@ You can hover over each line to see the exact suicide rate for that country/coun
 
 ![plot_1d](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_1d.png)
 
-#### Tab 2: Two Country Comparison
+### Tab 2: Two Country Comparison
 **Step 1:** Select 2 countries that you would like to compare. Select them in each dropdown (1 country per dropdown).
 ![plot_2a_dropdown](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2a_dropdown.png)
 
 **Step 2:** Pick a range of years that you are interested in looking into. Use the slider to select this range.
 The graph below will show the average suicide rate for the year range selected for each of the 2 countries.
-![plot_2a](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2a.png)
+![plot_2a](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2a.png = 100x)
 
 **Step 3:** You might be wondering about how the suicide rate for the 2 countries changes by demographic group.
 You can select one or more demographic groups (gender and age) to see the different suicide rates by demographic group for your 2 chosen countries.
 
-![plot_2b_dropdown](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2b_dropdown.png)
+![plot_2b_dropdown](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2b_dropdown.png = 100x)
 
 ![plot_2b](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2b.png)
 
