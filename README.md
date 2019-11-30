@@ -42,7 +42,7 @@ You can hover over each line to see the exact suicide rate for that country/coun
 
 #### Tab 2: Two Country Comparison
 **Step 1:** Select 2 countries that you would like to compare. Select them in each dropdown (1 country per dropdown).
-![plot_1a_dropdown](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_1a.png)
+![plot_2a_dropdown](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2a_dropdown.png)
 
 **Step 2:** Pick a range of years that you are interested in looking into. Use the slider to select this range.
 The graph below will show the average suicide rate for the year range selected for each of the 2 countries.
