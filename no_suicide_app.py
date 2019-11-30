@@ -33,10 +33,10 @@ def make_plot_1a():
     source = plot_a_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'])
+                        fields=['year'],empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Year', grid=False,labelAngle=-45)),
-        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
         color = alt.Color('continent',legend=alt.Legend(title="Legend"))
     ).properties(
         width=500,
@@ -62,7 +62,7 @@ def make_plot_1a():
     )
     line2 = alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
     x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
-    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
     color = alt.Color('Label',legend=alt.Legend())
     )
     chart_1a = alt.layer(
@@ -89,10 +89,10 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
     source = plot_b_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'])
+                        fields=['year'],empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
-        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
         color = alt.Color('sub_region',legend=alt.Legend(title = 'Legend'))
     ).properties(
         width=500,
@@ -118,7 +118,7 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
     )
     line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
     x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
-    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
     color = alt.Color('Label',legend=alt.Legend())
     )
     chart_1b = alt.layer(
@@ -145,10 +145,10 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
     source = plot_c_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'])
+                        fields=['year'],empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
-        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
         color = alt.Color('country',legend=alt.Legend(title='Legend'))
     ).properties(
         width=500,
@@ -174,7 +174,7 @@ def make_plot_1c(selected_country = 'Select a Country Please'):
     )
     line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
     x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
-    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
     color = alt.Color('Label',legend=alt.Legend())
     )
     chart_C = alt.layer(
@@ -201,10 +201,10 @@ def make_plot_1d(selected_country = 'Select a Country Please'):
     source = plot_d_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
-                        fields=['year'])
+                        fields=['year'],empty='none')
     line= alt.Chart(source).mark_line(point=False).encode(
         x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
-        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+        y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
         color = alt.Color('demo_group',legend=alt.Legend(title='Legend'))
     ).properties(
         width=500,
@@ -230,7 +230,7 @@ def make_plot_1d(selected_country = 'Select a Country Please'):
     )
     line2= alt.Chart(general_data).mark_line(stroke="black",point=False,strokeDash=[10],interpolate ='monotone',size =2,color="#FFAA00").encode(
     x = alt.X('year:O',axis=alt.Axis(title='Year',labelAngle=-45)),
-    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=False)),
+    y = alt.Y('suicides_per_100k_pop',axis=alt.Axis(title='Suicides per 100 k pop'),scale=alt.Scale(zero=True)),
     color = alt.Color('Label',legend=alt.Legend())
     )
     chart_D = alt.layer(
