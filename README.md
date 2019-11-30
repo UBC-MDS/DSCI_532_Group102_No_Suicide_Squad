@@ -46,12 +46,12 @@ You can hover over each line to see the exact suicide rate for that country/coun
 
 **Step 2:** Pick a range of years that you are interested in looking into. Use the slider to select this range.
 The graph below will show the average suicide rate for the year range selected for each of the 2 countries.
-![plot_2a](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2a.png = 100x)
+![plot_2a](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2a.png)
 
 **Step 3:** You might be wondering about how the suicide rate for the 2 countries changes by demographic group.
 You can select one or more demographic groups (gender and age) to see the different suicide rates by demographic group for your 2 chosen countries.
 
-![plot_2b_dropdown](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2b_dropdown.png = 100x)
+![plot_2b_dropdown](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2b_dropdown.png)
 
 ![plot_2b](https://github.com/UBC-MDS/DSCI_532_Group102_No_Suicide_Squad/blob/master/img/plot_2b.png)
 
