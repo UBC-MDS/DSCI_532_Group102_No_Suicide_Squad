@@ -405,7 +405,7 @@ def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list 
     b = country_b
 
     # Makes DataFrame of average suicide rates for the 2 countries
-    data2a = final_df.query('suicides_per_100k_pop>0.1').query('year > @year_start & year < @year_end').query('country == @a | country == @b').groupby(['country']).agg({'suicides_per_100k_pop':'mean'})
+    data2a = final_df.query('suicides_per_100k_pop>0.1').query('year >= @year_start & year <= @year_end').query('country == @a | country == @b').groupby(['country']).agg({'suicides_per_100k_pop':'mean'})
     data2a = data2a.reset_index()
 
     # Rounds values to 2 decimal points
