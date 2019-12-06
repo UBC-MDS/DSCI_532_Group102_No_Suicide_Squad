@@ -29,7 +29,22 @@ general_data['Label'] = 'Worldwide Average'
 
 #### DEFINE PLOT 1a FUNCTION (continent)
 def make_plot_1a():
-    # Create a plot 1a
+    """
+    Creates a line graph of suicide rate by all continents. 
+
+    Parameters
+    -----------
+    None
+
+    Returns
+    -----------
+    altair chart object
+        static line graph
+
+    Examples
+    ------------
+    make_plot_1a()
+    """
     source = plot_a_data.round(1)
 
     nearest = alt.selection(type='single', nearest=True, on='mouseover',
@@ -80,6 +95,24 @@ def make_plot_1a():
 
 #### DEFINE PLOT 1b FUNCTION (region)
 def make_plot_1b(selected_region = 'Select a Region Please'):
+    """
+    Creates a interactive line graph of suicide rate by year for selected regions.
+
+    Parameters
+    ------------
+    selected_region: lst 
+        List of regions selected via the drop-down.
+    
+    Returns
+    -----------
+    Altair chart object
+        Interactive plot of suicide rate by year for chosen regions.
+    
+    Examples
+    ----------
+    make_plot_1b(selected_region = ["Central America"])
+    make_plot_1b(selected_region = ["Central America", "Eastern Asia"])
+    """
 
     # Update Data source based on user selection:
     a = selected_region
@@ -172,6 +205,24 @@ continents = ['Africa',
 
 #### DEFINE PLOT 1c FUNCTION (countries)
 def make_plot_1c(selected_country = 'Select a Country Please'):
+    """
+    Creates an interactive line graph of suicide rate by year for selected countries.
+
+    Parameters
+    ------------
+    selected_country: lst 
+        List of country/countries selected via the drop-down. 
+    
+    Returns
+    -----------
+    Altair chart object
+        Interactive line graph of suicide rate by year for selected countries.
+
+    Examples
+    -----------
+    make_plot_1c(selected_country = ["United States"])
+    make_plot_1c(selected_country = ["Canada", "United States"])
+    """
 
     # Update Data source based on user selection:
     a = selected_country
@@ -340,7 +391,24 @@ regions_1 = ['Africa',
 
 #### DEFINE PLOT 1d FUNCTION (countries)
 def make_plot_1d(selected_country = 'Select a Country Please'):
+    """
+    Creates an interactive line graph of suicide rate by year by sex for selected countries.
 
+    Parameters
+    ------------
+    selected_country: lst
+        List of countries selected in previous plot via the drop-down.
+    
+    Returns
+    -------------
+    Altair chart object
+        Interactive plot of suicide rate by year by sex for selected countries.
+
+    Examples
+    ------------
+    make_plot_1d(selected_country = ["United States"])
+    make_plot_1d(selected_country = ["Canada", "United States"])
+    """
     # Update Data source based on user selection:
     a = selected_country
     plot_d_data = final_df.query('country in @a').query('suicides_per_100k_pop>0.1').query('year < 2015 and year > 1986').groupby(['year','demo_group'],as_index = False).agg({"suicides_per_100k_pop":"mean"})
@@ -396,6 +464,34 @@ def make_plot_1d(selected_country = 'Select a Country Please'):
 
 #### DEFINE PLOT 2a FUNCTION (2 country comparison: avg total suicide rate)
 def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list = [0,0]):
+    """
+    Generates two interactive bar charts of suicide rates for specified year range and 2 countries on tab 2.
+
+    Parameters
+    ------------
+    country_a : str
+        String of first country to compare suicide rate over time
+        (default - "Canada")
+
+    country_b : str
+        String of second country to compare suicide rate over time
+        (default - "United States")
+
+    year_list : lst
+        Range of years to view suicide rates on 
+        (default - [1986, 2014])
+    
+    Returns
+    -----------
+    Altiar chart object
+        Two bar charts of suicide rate by year for 2 chosen countries.
+    
+    Examples
+    -----------
+    make_plot2a(country_a = "Canada", country_b = "United States", year_list = [1999, 2005])
+    make_plot2a(country_a = "Japan", country_b = "United States", year_list = [1987, 2000])
+
+    """
 
     # Sets default values
     year_start = year_list[0]
@@ -430,7 +526,41 @@ def make_plot2a(country_a = 'Any Country', country_b = 'Any Country', year_list 
 
 #### DEFINE PLOT 2b FUNCTION (2 country comparison: by demographic group)
 def make_plot2b(country_a = 'Any Country', country_b = 'Any Country', year_list = [0,0], demo_selection = ['female : 25-34 years']):
+    """
+    Creates a set of interactive bar charts of suicide rate by year based on chosen demographics.
 
+    Parameters
+    -----------
+    country_a : str
+        String of previously selected country to see suicide rates by demographics groups on.
+        (default - "Canada")
+
+    country_b : str
+        String of previously selected country to see suicide rates by demographics groups on. 
+        (default - "United States")
+
+    year_list : lst
+        List of previously selected year range to see suicide rates by demographics groups on.
+        (default - [1986, 2014])
+    
+    demo_selection : lst
+        List of demographic groups chosen from checklist to see suicide rates by demographics groups on.
+        (default - ['female: 25-34 years'])
+
+    Returns
+    -----------
+    Altair chart object
+        1 or multiple bar graphs showing average suicide rate by country
+        for chosen countries and demographic groups
+    
+    Examples
+    ------------
+    make_plot2b(country_a = "Canada", country_b = "United States, year_list = [1999, 2005], 
+    demo_selection = ['female: 35-54 years', 'male: 35-54 years'])
+    make_plot2b(country_a = "Japan", country_b = "United States, year_list = [1987, 2000], 
+    demo_selection = ['female: 25-34 years'])
+
+    """
     # Sets default values
     year_start = year_list[0]
     year_end = year_list[1]
