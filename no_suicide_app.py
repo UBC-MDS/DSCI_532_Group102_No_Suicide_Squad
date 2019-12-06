@@ -171,10 +171,7 @@ def make_plot_1b(selected_region = 'Select a Region Please'):
 
 regions = ['Africa',
             'Eastern Africa',
-            'Middle Africa',
-            'Northern Africa',
             'Southern Africa',
-            'Western Africa',
             'Americas',
             'Caribbean',
             'Central America',
@@ -194,8 +191,7 @@ regions = ['Africa',
             'Oceania',
             'Australia and New Zealand',
             'Melanesia',
-            'Micronemia',
-            'Polynesia']
+            'Micronemia']
 
 continents = ['Africa',
             'Americas',
