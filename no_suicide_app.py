@@ -587,10 +587,12 @@ app.layout = html.Div([
                 **Tab 1**: How does the suicide rate change over time, and what effect does continent, region, country, age, and gender have on this?  
                 **Tab 2**: How does the suicide rate of one country compare against the suicide rate of another country? 
 
-                Please click on a tab to get started! 
+                Please click on Tab One to get started! 
 
                 **If you have thoughts of suicide, please reach out to your local Crisis Centre or Suicide Prevention Hotline.**  
                 **In BC, you can get help by visiting [www.crisiscentre.bc.ca](https://crisiscentre.bc.ca) or by calling 1-800-784-2433 from anywhere in the province.**
+                
+                Source: Suicide Rate Data used in this app is from [Kaggle](https://www.kaggle.com/russellyates88/suicide-rates-overview-1985-to-2016#master.csv)
                 '''
                 )
         ],
@@ -611,9 +613,7 @@ app.layout = html.Div([
 
 
             # Text for Plot 1a
-            html.Div([dcc.Markdown('''**Step 1:** This graph shows the average suicide rate over time, by continent.  
-            The dashed line shows the worldwide average for each year.  
-            You can hover over each line to see the exact suicide rate for that continent and year. ''')]),
+            html.Div([dcc.Markdown('''**Step 1:** This graph shows the average suicide rate over time, by continent.''')]),
 
             #### IFRAME: PLOT 1a
             html.Iframe(
@@ -635,8 +635,7 @@ app.layout = html.Div([
             html.H3('Suicide Rate by Region'),
             # Text for Plot 1b
             html.Div([dcc.Markdown('''**Step 2:** Are there any sub-regions you are specifically interested in looking at?  
-            You can use this drop-down to select one or more sub-regions (arranged by continent) to view the average suicide rate by year.  
-            You can hover over each line to see the exact suicide rate for that sub-region and year. The dashed line shows the worldwide average for each year.''')]), 
+            Select one or more sub-regions (arranged by continent) to view the average suicide rate by year.''')]), 
             html.H4('Select one or multiple Regions'),
 
             dcc.Dropdown(
@@ -667,9 +666,8 @@ app.layout = html.Div([
             
             #### DROPDOWNS: PLOT 1c
             html.H3('Suicide Rate by Country'),
-            html.Div([dcc.Markdown('''**Step 3:** Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more?  
-            Use the drop-down to select one or more countries (arranged by continent) to view the average suicide rate by year.  
-            You can hover over each line to see the exact suicide rate for that country and year. The dashed line shows the worldwide average for each year.''')]),
+            html.Div([dcc.Markdown('''**Step 3:** Are there any specific countries you’d like to look into?  
+            Select one or more countries (arranged by continent) to view the average suicide rate by year.''')]),
             html.H4('Select one or multiple countries'),
 
 
@@ -693,10 +691,7 @@ app.layout = html.Div([
             html.Iframe(height='25', width='10',style={'border-width': '0'}),
             # Text for Plot 1d
             html.H3('Suicide Rate by Demographic Groups'),
-            html.Div([dcc.Markdown('''**Step 4:** You may be wondering what factors other than location affect the suicide rate.  
-            Make sure you have at least one country selected above, and then this graph will automatically show the average suicide rates for 12 demographic groups (based on age and gender) over time.  
-            If you have chosen multiple countries, it will display the average suicide rate for each of the 12 demographic groups of all selected countries.  
-            You can hover over each line to see the exact suicide rate for that country/countries and demographic group. The dashed line shows the worldwide average for each year.''')]),
+            html.Div([dcc.Markdown('''**Step 4:** This graph will automatically show the average suicide rates for 12 demographic groups based on the countries you selected previously.''')]),
             
             #### IFRAME: PLOT 1d
             html.Iframe(
@@ -722,7 +717,7 @@ app.layout = html.Div([
             html.Iframe(height='20', width='10',style={'border-width': '0'}),
 
             # Text for Plot 2a - Country Dropdowns
-            html.Div([dcc.Markdown('''**Step 1:** Pick 2 countries that you would like to compare. Select them in each dropdown (1 country per dropdown).''')]),
+            html.Div([dcc.Markdown('''**Step 1:** Select 2 countries that you would like to compare (1 country per dropdown).''')]),
 
             #### DROPDOWNS: PLOT 2a
             dcc.Dropdown(
@@ -745,8 +740,7 @@ app.layout = html.Div([
             html.Iframe(height='20', width='10',style={'border-width': '0'}),
 
             # Text for Plot 2a - Year Slider
-            html.Div([dcc.Markdown('''**Step 2:** Pick a range of years that you are interested in looking into. Use the slider to select this range.  
-            The graph below will show the average suicide rate for the year range selected for each of the 2 countries.''')]),
+            html.Div([dcc.Markdown('''**Step 2:** Select a range of years to see the average suicide rate for this time frame.''')]),
             
             dcc.RangeSlider(
                 id='my-range-slider',
@@ -798,8 +792,7 @@ app.layout = html.Div([
                 ),
             
              # Text for Plot 2b
-            html.Div([dcc.Markdown('''**Step 3:** You might be wondering about how the suicide rate for the 2 countries changes by demographic group.  
-            You can select one or more demographic groups (gender and age) to see the different suicide rates by demographic group for your 2 chosen countries.''')]),
+            html.Div([dcc.Markdown('''**Step 3:** Select one or more groups to see average suicide rates by demographics in each country.''')]),
 
             #### DROPDOWNS: PLOT 2b
             dcc.Checklist(
