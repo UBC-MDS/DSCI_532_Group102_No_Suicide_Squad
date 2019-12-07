@@ -191,7 +191,7 @@ regions = ['Africa',
             'Oceania',
             'Australia and New Zealand',
             'Melanesia',
-            'Micronemia']
+            'Micronesia']
 
 continents = ['Africa',
             'Americas',
