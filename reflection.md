@@ -1,56 +1,102 @@
 # Team Reflection - Understanding Suicide Rates App
 
+Note: This reflection was originally submitted as part of Milestone 2, but has been updated to include peer and TA feedback received with Milestone 3. 
+
 ## What It Does Well 
 
 - Our app answers our 2 major research questions in what we believe is an organized and easy-to-follow fashion. It also allows for interactivity, and the tooltips display individual numerical values.
 
 - The visualizations are separated into 2 tabs by research question, which reduces cluttering and allows for better organization.
 
-- There is a clear overall purpose and general instructions for the app listed at the top. There are also step-by-step instructions for each plot which guides the user through a narrative (e.g. “Now that you’ve had a chance to explore the suicide rate by continent and subregion, are there any countries you’d like to look into more?”.) 
+- There is a clear overall purpose and general instructions for the app listed at the top. There are also step-by-step instructions for each plot which guides the user through a narrative.
 
 - The ‘worldwide average’ dashed line in tab 1 allows the user to visually compare how their selected region/country/demographic group to the rest of the world. 
 
-## Limitations
+## Addressing Peer Feedback
 
-#### Tab 1
-- Some of the drop-downs are very lengthy (e.g. the countries list), and requires the user to scroll to the country they are looking for. 
+#### Summary of Feedback Received
+- It was recommended that we remove the regions without data in the ‘regions’ plot in tab 1, as, when users chose these regions, the graphs would not update. 
 
-- The ‘hover’ feature has not been enabled on the ‘worldwide average’ line. 
+- Most of our peers also suggested reducing the amount of text in the app because it was overwhelming and often left unread. 
 
-- There is missing data for certain countries, years, and demographics, so if a user selects these locations/demographics, the charts may not look updated, which can cause confusion.
+- The demographics plot in tab 1 seemed to cause some confusion. It was suggested that we should make clear that it is automatically updated based off the ‘country’ plot (plot 1c). It was also suggested that we de-clutter this plot by only plotting the average suicide rates for males and females rather than separating it by sex and age. 
 
-<br/> 
+- There were also a variety of aesthetics-related suggestions. Namely: (i) decreasing the opacity of our line graphs so it is easier to see the tool-tip numbers, (ii) moving the plots to the center of the app, (iii) making Tab 1 a ‘default’ tab, and (iv) changing the default colour scheme to avoid issues like yellow lines on white plots.
 
-#### Tab 2
-- If the user does not open the graph in a full-screen window, the year range slider does not change in size, and as a result, appears squished. 
 
-- There is no way to “select all” graphs; if the user wants to see all groups, they need to manually check each box.
+#### Reflection on Feedback Received
+- Generally, it was easy for our peers to use our app. They seemed to understand the purpose of the app and how to navigate it.
 
-## Future Improvements and Additions
+- All 3 of our peer feedback groups had users mention that our instructions were too long and that the demographics chart on Tab 1 was overwhelming. It was also interesting that all 3 of our groups did understand the general purpose and features of the app. 
 
-#### Tab 1
-- For the lengthy dropdowns, a potential solution would be to add a ‘search’ button at the top of dropdowns where they can start typing in the name of the country/feature they are interested in, and the dropdown will automatically shorten to match that name.
+- From the feedback we received, we decided to modify the items that we could change with the time constraints we were working with. We decided to focus on the main usability features/bugs in our code and app (docstrings, missing data, the rangeslider not working for 2 years, length of instructions). 
 
-- We could remove the locations/demographics with missing data.
+- For the more aesthetic-related issues (the demographics plot being cluttered, increasing opacities, making Tab1 a default tab, changing colour schemes and plot widths), we decided to forgo these changes in our Python app, but will look into incorporating these in our R app next week. This decision was made mainly due to time constraints.
 
-<br/> 
+- Overall, the “fly-on-the-wall” experience was very valuable, and was perhaps the most valuable part of the peer feedback process. At times, it was frustrating when our peers had a question about the app but we could not answer it until the ‘teaching’ period, but it helped us understand the gaps and limitations of our app. For example, none of our peers read the instructions before each graph (they all later mentioned that it was too long), so we cut down the instructions to shorter/more basic sentences in an attempt to avoid overwhelming the users of our app. 
 
-#### Tab 2
-- For the non-full-screen issues, we should find a way to resize the slider so it appears proportionally on a window of any size. 
+- Lastly, it was suggested that we could filter the ‘countries’ drop-down in Tab 1 based off the ‘regions’ that were selected in the previous graph. This suggestion has not been implemented due to time constraints.
 
-- For the checkboxes, we could include a “select all” or “deselect all” option.
 
 ## Addressing TA Feedback
 
-#### Issues
-We were reminded to use GitHub Issues to communicate with our team. We were previously using Slack, but started creating Issues to allow us to locate our action items in a more centralized location. This also helps us keep track of what has been resolved and what still needs to be done. 
+#### Milestone 2 Feedback 
 
-<br/> 
+*It’s great that you included a narrative for the app, but the information for each graph is at times a bit much, and could probably be reduced to one sentence per graph. Users can explore the app themselves to discover the various interactive features.*
+- **Response**: We reduced the instructions for each graph to just the minimum amount of information required. 
 
-#### Coding and Submitting Pull Requests
-We were reminded to make sure that the work is being distributed equally. To resolve this, we each tackled certain issues and code chunks (e.g. two graphs each). Please note that sometimes we only worked off one computer due to dying laptops/internet connectivity issues. 
 
-<br/> 
 
-#### General Milestone 1 Feedback
-We ensured that the links on our repos linked to specific commits. We also added instructions/a “narrative” to our app to help the user navigate our app. 
+*It would be good to have a default already selected for the graphs on the first tab.*
+- **Response**: We considered adding default selections for the Region and Country, but are still undecided about whether to do this because we’d like users to play around themselves without being influenced by our default selections. The reason why we included defaults for Tab 2 is so the charts wouldn’t appear blank when the tab is opened. In Tab 1, the charts don’t appear blank by default because the worldwide average appears by default.
+
+
+
+*Some of the options don't seem to work on the first tab graphs, such as "Western Africa".*
+- **Response**: We removed the options for the graphs on first tab that did not have data (e.g. Western Africa). 
+
+
+
+*The slider in Tab 2 doesn’t seem to work when there is only a range of 2 years selected.*
+- **Response**: We fixed the error in our code that resulted in this issue.
+
+
+
+*Another idea would be the option to group the demographic groups more broadly, such as females vs. males for a selected country. (Lower priority)*
+- **Response**: We chose not to group the demographic groups into more broad categories due to time limitations, but we plan to incorporate this for our R app. 
+
+## Summary of Changes Made
+
+#### Overall
+- We added docstrings in PEP8 style to all our functions to help those who may be unfamiliar with our data better understand our code.
+
+- We shortened the instructions before each graph so users don’t feel overwhelmed with the amount of information presented.
+
+- We improved code readability by refactoring our code so that ‘Country’ and ‘Region’ dropdowns refer to lists of countries and regions rather than having them listed within the `dcc.Dropdown` sections.
+
+#### Tab 1
+- We removed regions that did not have data so that they cannot be selected using the dropdown.
+
+- We clarified the text to make it clear that both charts 1c and 1d are updated using the ‘Country’ dropdown.
+
+
+#### Tab 2
+- We fixed the error in our code that prevented users from selecting a range of only 2 years.  
+
+- We added more space between the year slider and plot 2a to prevent the ‘Year’ slider from appearing over the plot on certain screens.
+
+
+## Limitations That Remain / Possible Future Fixes
+
+#### Tab 1
+- Plots 1a-d: The ‘hover’ feature has not been enabled on the ‘worldwide average’ line.
+
+- Plots 1b-d: There are missing data for specific demographics and years for some countries, so if a user selects these location/demographic/time combinations, the charts may look as though only parts of the plots have been updated, which can cause confusion.
+
+
+#### Tab 2
+- Year Slider: If the user does not open the graph in a full-screen window, the year range slider does not change in size, and as a result, appears squished.
+
+- Plot 2b: There is no option to “select all” demographic groups with one click; if the user wants to see all groups, they need to manually check each box.
+
+
