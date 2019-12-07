@@ -42,27 +42,27 @@ Note: This reflection was originally submitted as part of Milestone 2, but has b
 
 #### Milestone 2 Feedback 
 
-**TA Feedback**: *It’s great that you included a narrative for the app, but the information for each graph is at times a bit much, and could probably be reduced to one sentence per graph. Users can explore the app themselves to discover the various interactive features.*
+*It’s great that you included a narrative for the app, but the information for each graph is at times a bit much, and could probably be reduced to one sentence per graph. Users can explore the app themselves to discover the various interactive features.*
 - **Response**: We reduced the instructions for each graph to just the minimum amount of information required. 
 
 
 
-**TA Feedback**: *It would be good to have a default already selected for the graphs on the first tab.*
+*It would be good to have a default already selected for the graphs on the first tab.*
 - **Response**: We considered adding default selections for the Region and Country, but are still undecided about whether to do this because we’d like users to play around themselves without being influenced by our default selections. The reason why we included defaults for Tab 2 is so the charts wouldn’t appear blank when the tab is opened. In Tab 1, the charts don’t appear blank by default because the worldwide average appears by default.
 
 
 
-**TA Feedback**: *Some of the options don't seem to work on the first tab graphs, such as "Western Africa".*
+*Some of the options don't seem to work on the first tab graphs, such as "Western Africa".*
 - **Response**: We removed the options for the graphs on first tab that did not have data (e.g. Western Africa). 
 
 
 
-**TA Feedback**: *The slider in Tab 2 doesn’t seem to work when there is only a range of 2 years selected.*
+*The slider in Tab 2 doesn’t seem to work when there is only a range of 2 years selected.*
 - **Response**: We fixed the error in our code that resulted in this issue.
 
 
 
-**TA Feedback**: *Another idea would be the option to group the demographic groups more broadly, such as females vs. males for a selected country. (Lower priority)*
+*Another idea would be the option to group the demographic groups more broadly, such as females vs. males for a selected country. (Lower priority)*
 - **Response**: We chose not to group the demographic groups into more broad categories due to time limitations, but we plan to incorporate this for our R app. 
 
 ## Summary of Changes Made
@@ -80,7 +80,7 @@ Note: This reflection was originally submitted as part of Milestone 2, but has b
 - We clarified the text to make it clear that both charts 1c and 1d are updated using the ‘Country’ dropdown.
 
 
-### Tab 2
+#### Tab 2
 - We fixed the error in our code that prevented users from selecting a range of only 2 years.  
 
 - We added more space between the year slider and plot 2a to prevent the ‘Year’ slider from appearing over the plot on certain screens.
