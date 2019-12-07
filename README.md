@@ -1,7 +1,7 @@
 # DSCI_532_Group102_No_Suicide_Squad
 DSCI 532 Lab 1 Group 102: Anny Chih, Suvarna Moharir, &amp; Manuel Maldonado Aguilar
 
-[Understanding Suicide Rates App Link](https://dsci-532-group102-milestone2.herokuapp.com/)
+[Understanding Suicide Rates App Link](https://dsci-532-group102-milestone3.herokuapp.com/)
 
 **Note: The original proposed app sketches are still available at the bottom of this README file** 
 
