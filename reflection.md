@@ -23,6 +23,7 @@ Note: This reflection was originally submitted as part of Milestone 2, but has b
 
 - There were also a variety of aesthetics-related suggestions. Namely: (i) decreasing the opacity of our line graphs so it is easier to see the tool-tip numbers, (ii) moving the plots to the center of the app, (iii) making Tab 1 a ‘default’ tab, and (iv) changing the default colour scheme to avoid issues like yellow lines on white plots.
 
+
 #### Reflection on Feedback Received
 - Generally, it was easy for our peers to use our app. They seemed to understand the purpose of the app and how to navigate it.
 
@@ -43,16 +44,24 @@ Note: This reflection was originally submitted as part of Milestone 2, but has b
 
 **TA Feedback**: *It’s great that you included a narrative for the app, but the information for each graph is at times a bit much, and could probably be reduced to one sentence per graph. Users can explore the app themselves to discover the various interactive features.*
 - **Response**: We reduced the instructions for each graph to just the minimum amount of information required. 
-<br/>
+
+
+
 **TA Feedback**: *It would be good to have a default already selected for the graphs on the first tab.*
 - **Response**: We considered adding default selections for the Region and Country, but are still undecided about whether to do this because we’d like users to play around themselves without being influenced by our default selections. The reason why we included defaults for Tab 2 is so the charts wouldn’t appear blank when the tab is opened. In Tab 1, the charts don’t appear blank by default because the worldwide average appears by default.
-<br/>
+
+
+
 **TA Feedback**: *Some of the options don't seem to work on the first tab graphs, such as "Western Africa".*
 - **Response**: We removed the options for the graphs on first tab that did not have data (e.g. Western Africa). 
-<br/>
+
+
+
 **TA Feedback**: *The slider in Tab 2 doesn’t seem to work when there is only a range of 2 years selected.*
 - **Response**: We fixed the error in our code that resulted in this issue.
-<br/>
+
+
+
 **TA Feedback**: *Another idea would be the option to group the demographic groups more broadly, such as females vs. males for a selected country. (Lower priority)*
 - **Response**: We chose not to group the demographic groups into more broad categories due to time limitations, but we plan to incorporate this for our R app. 
 
